@@ -1,5 +1,5 @@
+#include "PyroEnginePCH.h"
 #include "Application.h"
-#include <iostream>
 
 namespace PyroEngine
 {
