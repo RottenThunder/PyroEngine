@@ -12,7 +12,7 @@ namespace PyroEngine
 		WindowClose, WindowResize, WindowMoved
 	};
 
-	enum EventCategory : uint32_t
+	enum class EventCategory : uint32_t
 	{
 		None = 0,
 		Input = PYRO_BIT_FIELD(0),
@@ -35,7 +35,7 @@ namespace PyroEngine
 
 		inline bool IsInCategory(EventCategory category)
 		{
-			return GetCategoryFlags() & category;
+			return GetCategoryFlags() & (uint32_t)category;
 		}
 	};
 

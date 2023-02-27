@@ -21,6 +21,14 @@ namespace PyroEngine
 	}
 #endif
 
+#if defined PYRO_CONFIG_RELEASE
+	Layer::Layer(const std::string& debugDescription)
+		: m_LayerID(0), m_LayerEnabled(true)
+	{
+		//TODO: Generate a random number to be the LayerID
+	}
+#endif
+
 	Layer::~Layer()
 	{
 	}

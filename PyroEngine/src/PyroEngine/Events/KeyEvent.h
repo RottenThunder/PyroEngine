@@ -13,7 +13,7 @@ namespace PyroEngine
 	public:
 		inline uint32_t GetKeyCode() const { return m_KeyCode; }
 
-		virtual uint32_t GetCategoryFlags() const override { return EventCategory::Input | EventCategory::Key; }
+		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Input | (uint32_t)EventCategory::Key; }
 	};
 
 	class KeyPressedEvent : public KeyEvent

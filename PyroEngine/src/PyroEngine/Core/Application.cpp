@@ -1,13 +1,12 @@
 #include "PyroEnginePCH.h"
 #include "Application.h"
-#include "PyroEngine/Events/WindowEvent.h"
-#include "PyroEngine/Events/KeyEvent.h"
-#include "PyroEngine/Events/MouseEvent.h"
+#include <GLFW/glfw3.h> //For the clear colour
 
 namespace PyroEngine
 {
 	Application::Application()
 	{
+		m_Window = std::unique_ptr<Window>(Window::Create("Pyro Engine", 1280, 720));
 	}
 
 	Application::~Application()
@@ -16,12 +15,16 @@ namespace PyroEngine
 
 	void Application::Run()
 	{
-		std::cout << "Welcome to Pyro Engine!" << std::endl;
-		std::cout << "\n";
+		while (m_Running)
+		{
+			glClearColor(1.0f, 0.25f, 0.125f, 1.0f);
+			glClear(GL_COLOR_BUFFER_BIT);
 
-		//TODO: Put into Run Loop
-		for (Layer* layer : m_LayerStack)
-			layer->OnUpdate();
+			for (Layer* layer : m_LayerStack)
+				layer->OnUpdate();
+
+			m_Window->OnUpdate();
+		}
 	}
 
 	void Application::PushLayer(Layer* layer)

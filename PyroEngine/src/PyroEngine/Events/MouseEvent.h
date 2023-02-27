@@ -15,7 +15,7 @@ namespace PyroEngine
 		inline double GetY() const { return m_MouseY; }
 
 		virtual EventType GetEventType() const override { return EventType::MouseMoved; }
-		virtual uint32_t GetCategoryFlags() const override { return EventCategory::Input | EventCategory::Mouse; }
+		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Input | (uint32_t)EventCategory::Mouse; }
 		virtual std::string GetName() const override
 		{
 			std::stringstream ss;
@@ -38,7 +38,7 @@ namespace PyroEngine
 		inline double GetYOffset() const { return m_YOffset; }
 
 		virtual EventType GetEventType() const override { return EventType::MouseScrolled; }
-		virtual uint32_t GetCategoryFlags() const override { return EventCategory::Input | EventCategory::Mouse; }
+		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Input | (uint32_t)EventCategory::Mouse; }
 		virtual std::string GetName() const override
 		{
 			std::stringstream ss;
@@ -59,7 +59,7 @@ namespace PyroEngine
 	public:
 		inline uint32_t GetMouseButton() const { return m_Button; }
 
-		virtual uint32_t GetCategoryFlags() const override { return EventCategory::Input | EventCategory::MouseButton; }
+		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Input | (uint32_t)EventCategory::MouseButton; }
 	};
 
 	class MouseButtonPressedEvent : public MouseButtonEvent

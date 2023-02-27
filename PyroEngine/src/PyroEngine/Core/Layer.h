@@ -30,5 +30,10 @@ namespace PyroEngine
 	public:
 		Layer(const std::string& debugDescription);
 #endif
+
+#if defined PYRO_CONFIG_RELEASE
+	public:
+		Layer(const std::string& debugDescription);
+#endif
 	};
 }

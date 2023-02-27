@@ -29,7 +29,14 @@ project "PyroEngine"
 
 	includedirs
 	{
-		"%{prj.name}/src"
+		"%{prj.name}/src",
+		"Dependencies/GLFW/include"
+	}
+
+	links
+	{
+		"Dependencies/GLFW/lib/glfw3_mt.lib",
+		"opengl32.lib"
 	}
 
 	filter "system:windows"
@@ -78,7 +85,8 @@ project "Sandbox"
 	includedirs
 	{
 		"%{prj.name}/src",
-		"PyroEngine/src"
+		"PyroEngine/src",
+		"Dependencies/GLFW/include"
 	}
 
 	links
