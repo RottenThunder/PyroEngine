@@ -8,15 +8,13 @@ public:
 
 	void OnUpdate() override
 	{
-		std::cout << "ExampleLayer is Updating" << std::endl;
+		//std::cout << "ExampleLayer is Updating" << std::endl;
 	}
 
-	/*
 	void OnEvent(PyroEngine::Event& e) override
 	{
-		std::cout << e.GetName() << std::endl;
+		std::cout << e.GetDescription() << std::endl;
 	}
-	*/
 };
 
 class Sandbox : public PyroEngine::Application

@@ -27,7 +27,7 @@ namespace PyroEngine
 		inline uint64_t GetRepeatCount() const { return m_RepeatCount; }
 
 		virtual EventType GetEventType() const override { return EventType::KeyPressed; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: KeyPressedEvent: " << m_KeyCode << " (" << m_RepeatCount << " repeats)";
@@ -43,7 +43,7 @@ namespace PyroEngine
 			: KeyEvent(keyCode) {}
 
 		virtual EventType GetEventType() const override { return EventType::KeyReleased; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: KeyReleasedEvent: " << m_KeyCode;

@@ -1,12 +1,12 @@
 #include "PyroEnginePCH.h"
 #include "Application.h"
-#include <GLFW/glfw3.h> //For the clear colour
 
 namespace PyroEngine
 {
 	Application::Application()
 	{
 		m_Window = std::unique_ptr<Window>(Window::Create("Pyro Engine", 1280, 720));
+		m_Window->SetEventCallback(PYRO_BIND_EVENT_FUNCTION(Application::OnEvent));
 	}
 
 	Application::~Application()
@@ -17,9 +17,6 @@ namespace PyroEngine
 	{
 		while (m_Running)
 		{
-			glClearColor(1.0f, 0.25f, 0.125f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
-
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
@@ -37,11 +34,22 @@ namespace PyroEngine
 		m_LayerStack.PopLayer(layer);
 	}
 
-	//TODO: Put into OnEvent Function
-	//for (auto it = layerStack.end(); it != layerStack.begin();)
-	//{
-	//	(*--it)->OnEvent(e);
-	//	if (e.handled)
-	//		break;
-	//}
+	void Application::OnEvent(Event& e)
+	{
+		EventDispatcher eventDispatcher(e);
+		eventDispatcher.Dispatch<WindowCloseEvent>(PYRO_BIND_EVENT_FUNCTION(Application::OnWindowClose));
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
 }

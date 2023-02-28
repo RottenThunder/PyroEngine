@@ -22,16 +22,13 @@ namespace PyroEngine
 		Window = PYRO_BIT_FIELD(4)
 	};
 
-	class Event
+	struct Event
 	{
-	private:
-		friend class EventDispatcher;
-	protected:
-		bool m_Handled = false;
-	public:
+		bool Handled = false;
+
 		virtual EventType GetEventType() const = 0;
 		virtual uint32_t GetCategoryFlags() const = 0;
-		virtual std::string GetName() const = 0;
+		virtual std::string GetDescription() const = 0;
 
 		inline bool IsInCategory(EventCategory category)
 		{
@@ -51,7 +48,7 @@ namespace PyroEngine
 		void Dispatch(std::function<bool(T&)> func)
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
-				m_Event.m_Handled = func(*(T*)&m_Event);
+				m_Event.Handled = func(*(T*)&m_Event);
 		}
 	};
 }

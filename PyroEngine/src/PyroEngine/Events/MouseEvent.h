@@ -16,7 +16,7 @@ namespace PyroEngine
 
 		virtual EventType GetEventType() const override { return EventType::MouseMoved; }
 		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Input | (uint32_t)EventCategory::Mouse; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: MouseMovedEvent: " << m_MouseX << ", " << m_MouseY;
@@ -39,7 +39,7 @@ namespace PyroEngine
 
 		virtual EventType GetEventType() const override { return EventType::MouseScrolled; }
 		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Input | (uint32_t)EventCategory::Mouse; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: MouseScrolledEvent: " << m_XOffset << ", " << m_YOffset;
@@ -69,7 +69,7 @@ namespace PyroEngine
 			: MouseButtonEvent(button) {}
 
 		virtual EventType GetEventType() const override { return EventType::MouseButtonPressed; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: MouseButtonPressedEvent: " << m_Button;
@@ -85,7 +85,7 @@ namespace PyroEngine
 			: MouseButtonEvent(button) {}
 
 		virtual EventType GetEventType() const override { return EventType::MouseButtonReleased; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: MouseButtonReleasedEvent: " << m_Button;

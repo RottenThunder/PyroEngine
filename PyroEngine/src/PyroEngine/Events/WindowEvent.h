@@ -16,7 +16,7 @@ namespace PyroEngine
 
 		virtual EventType GetEventType() const override { return EventType::WindowMoved; }
 		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Window; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: WindowMovedEvent: " << m_PosX << ", " << m_PosY;
@@ -39,7 +39,7 @@ namespace PyroEngine
 
 		virtual EventType GetEventType() const override { return EventType::WindowResize; }
 		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Window; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: WindowResizeEvent: " << m_Width << ", " << m_Height;
@@ -56,7 +56,7 @@ namespace PyroEngine
 
 		virtual EventType GetEventType() const override { return EventType::WindowClose; }
 		virtual uint32_t GetCategoryFlags() const override { return (uint32_t)EventCategory::Window; }
-		virtual std::string GetName() const override
+		virtual std::string GetDescription() const override
 		{
 			std::stringstream ss;
 			ss << "[PYRO]: WindowCloseEvent";
