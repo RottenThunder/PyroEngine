@@ -3,6 +3,7 @@
 #include "PyroEngine/Events/KeyEvent.h"
 #include "PyroEngine/Events/MouseEvent.h"
 #include "PyroEngine/Events/WindowEvent.h"
+#include "PyroEngine/Core/Input.h"
 
 namespace PyroEngine
 {
@@ -49,6 +50,7 @@ namespace PyroEngine
 
 		glfwMakeContextCurrent(WindowObject);
 		glfwSetWindowUserPointer(WindowObject, &windowData);
+		glfwGetWindowPos(WindowObject, &windowData.PosX, &windowData.PosY);
 		SetVSync(false);
 
 		//Setting GLFW Event Callbacks
@@ -64,6 +66,8 @@ namespace PyroEngine
 		glfwSetWindowPosCallback(WindowObject, [](GLFWwindow* window, int xpos, int ypos)
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+				data.PosX = xpos;
+				data.PosY = ypos;
 				WindowMovedEvent e(xpos, ypos);
 				data.EventCallback(e);
 			});
@@ -79,26 +83,29 @@ namespace PyroEngine
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				switch (action)
+				if (s_OpenGLToPyroKeyCodes.contains(key))
 				{
-				case GLFW_PRESS:
-				{
-					KeyPressedEvent e((uint32_t)key, 0);
-					data.EventCallback(e);
-					break;
-				}
-				case GLFW_RELEASE:
-				{
-					KeyReleasedEvent e((uint32_t)key);
-					data.EventCallback(e);
-					break;
-				}
-				case GLFW_REPEAT:
-				{
-					KeyPressedEvent e((uint32_t)key, 1); //GLFW does not keep track of the repeat count
-					data.EventCallback(e);
-					break;
-				}
+					switch (action)
+					{
+					case GLFW_PRESS:
+					{
+						KeyPressedEvent e(s_OpenGLToPyroKeyCodes.at(key), 0);
+						data.EventCallback(e);
+						break;
+					}
+					case GLFW_RELEASE:
+					{
+						KeyReleasedEvent e(s_OpenGLToPyroKeyCodes.at(key));
+						data.EventCallback(e);
+						break;
+					}
+					case GLFW_REPEAT:
+					{
+						KeyPressedEvent e(s_OpenGLToPyroKeyCodes.at(key), 1); //GLFW does not keep track of the repeat count
+						data.EventCallback(e);
+						break;
+					}
+					}
 				}
 			});
 
@@ -106,20 +113,23 @@ namespace PyroEngine
 			{
 				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-				switch (action)
+				if (s_OpenGLToPyroMouseButtonCodes.contains(button))
 				{
-				case GLFW_PRESS:
-				{
-					MouseButtonPressedEvent e((uint32_t)button);
-					data.EventCallback(e);
-					break;
-				}
-				case GLFW_RELEASE:
-				{
-					MouseButtonReleasedEvent e((uint32_t)button);
-					data.EventCallback(e);
-					break;
-				}
+					switch (action)
+					{
+					case GLFW_PRESS:
+					{
+						MouseButtonPressedEvent e(s_OpenGLToPyroMouseButtonCodes.at(button));
+						data.EventCallback(e);
+						break;
+					}
+					case GLFW_RELEASE:
+					{
+						MouseButtonReleasedEvent e(s_OpenGLToPyroMouseButtonCodes.at(button));
+						data.EventCallback(e);
+						break;
+					}
+					}
 				}
 			});
 

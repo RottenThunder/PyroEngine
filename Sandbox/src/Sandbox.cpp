@@ -8,12 +8,17 @@ public:
 
 	void OnUpdate() override
 	{
-		//std::cout << "ExampleLayer is Updating" << std::endl;
+		if (PyroEngine::Input::IsKeyPressed(PYRO_KEY_A))
+			std::cout << "A Key Was Pressed!" << std::endl;
 	}
 
 	void OnEvent(PyroEngine::Event& e) override
 	{
-		std::cout << e.GetDescription() << std::endl;
+		if (e.GetEventType() == PyroEngine::EventType::KeyPressed)
+		{
+			PyroEngine::KeyPressedEvent& keyEvent = (PyroEngine::KeyPressedEvent&)e;
+			std::cout << keyEvent.GetKeyCode() << std::endl;
+		}
 	}
 };
 

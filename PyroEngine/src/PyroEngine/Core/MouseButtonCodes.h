@@ -1,0 +1,13 @@
+#pragma once
+
+#define PYRO_MOUSE_BUTTON_1         0ui32
+#define PYRO_MOUSE_BUTTON_2         1ui32
+#define PYRO_MOUSE_BUTTON_3         2ui32
+#define PYRO_MOUSE_BUTTON_4         3ui32
+#define PYRO_MOUSE_BUTTON_5         4ui32
+#define PYRO_MOUSE_BUTTON_6         5ui32
+#define PYRO_MOUSE_BUTTON_7         6ui32
+#define PYRO_MOUSE_BUTTON_8         7ui32
+#define PYRO_MOUSE_BUTTON_LEFT      PYRO_MOUSE_BUTTON_1
+#define PYRO_MOUSE_BUTTON_RIGHT     PYRO_MOUSE_BUTTON_2
+#define PYRO_MOUSE_BUTTON_MIDDLE    PYRO_MOUSE_BUTTON_3

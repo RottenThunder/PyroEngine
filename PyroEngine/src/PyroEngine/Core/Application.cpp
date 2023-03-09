@@ -3,8 +3,13 @@
 
 namespace PyroEngine
 {
+	Application* Application::s_Instance = nullptr;
+
 	Application::Application()
 	{
+		PYRO_REVERSE_ASSERT(s_Instance, "Application already exists");
+		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::Create("Pyro Engine", 1280, 720));
 		m_Window->SetEventCallback(PYRO_BIND_EVENT_FUNCTION(Application::OnEvent));
 	}

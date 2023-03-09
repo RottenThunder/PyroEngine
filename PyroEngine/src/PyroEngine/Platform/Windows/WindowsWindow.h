@@ -12,6 +12,8 @@ namespace PyroEngine
 			std::string Title;
 			uint32_t Width;
 			uint32_t Height;
+			int32_t PosX;
+			int32_t PosY;
 			std::function<void(Event&)> EventCallback;
 			bool VSync;
 		};
@@ -24,6 +26,8 @@ namespace PyroEngine
 	public:
 		WindowsWindow(const std::string& title, uint32_t width, uint32_t height);
 		virtual ~WindowsWindow();
+
+		virtual inline void* GetNativeWindow() const override { return WindowObject; }
 
 		virtual inline uint32_t GetWidth() const override { return windowData.Width; }
 		virtual inline uint32_t GetHeight() const override { return windowData.Height; }
