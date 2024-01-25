@@ -18,6 +18,9 @@ project "PyroEngine"
 	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
 	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
 
+	pchheader "PyroEnginePCH.h"
+	pchsource "PyroEngine/src/PyroEnginePCH.cpp"
+
 	files
 	{
 		"%{prj.name}/src/**.h",
