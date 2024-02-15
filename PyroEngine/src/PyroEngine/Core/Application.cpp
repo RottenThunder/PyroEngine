@@ -1,5 +1,6 @@
 #include "PyroEnginePCH.h"
 #include "Application.h"
+#include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
 namespace PyroEngine
@@ -24,6 +25,14 @@ namespace PyroEngine
 		PYRO_ASSERT(WindowObject, "Window Object == NULL!!!");
 
 		glfwMakeContextCurrent(WindowObject);
+
+		int gladInit = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+		if (gladInit == GLFW_FALSE)
+		{
+			glfwTerminate();
+			return;
+		}
+
 		glfwSwapInterval(0);
 
 		while (!glfwWindowShouldClose(WindowObject))
