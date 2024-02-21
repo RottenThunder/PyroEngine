@@ -48,8 +48,7 @@ project "PyroEngine"
 	links
 	{
 		"GLFW",
-		"Glad",
-		"opengl32.lib"
+		"Glad"
 	}
 
 	filter "system:windows"
@@ -60,6 +59,11 @@ project "PyroEngine"
 			"PYRO_PLATFORM_WINDOWS"
 		}
 
+		links
+		{
+			"opengl32.lib"
+		}
+
 	filter "system:linux"
 		pic "On"
 		systemversion "latest"
@@ -67,6 +71,11 @@ project "PyroEngine"
 		defines
 		{
 			"PYRO_PLATFORM_LINUX"
+		}
+
+		links
+		{
+			"GL"
 		}
 
 	filter "configurations:Debug"
@@ -121,6 +130,18 @@ project "PyroEditor"
 		defines
 		{
 			"PYRO_PLATFORM_LINUX"
+		}
+
+		links
+		{
+			"GLFW",
+			"Glad",
+			"GL",
+			"X11",
+			"Xrandr",
+			"Xi",
+			"Xinerama",
+			"Xcursor"
 		}
 
 	filter "configurations:Debug"
@@ -222,8 +243,8 @@ project "Glad"
 	files
 	{
 		"Dependencies/%{prj.name}/include/glad/glad.h",
-        "Dependencies/%{prj.name}/include/KHR/khrplatform.h",
-        "Dependencies/%{prj.name}/src/glad.c"
+		"Dependencies/%{prj.name}/include/KHR/khrplatform.h",
+		"Dependencies/%{prj.name}/src/glad.c"
 	}
 
 	includedirs
@@ -232,11 +253,11 @@ project "Glad"
 	}
 
 	filter "system:windows"
-        systemversion "latest"
+		systemversion "latest"
 
 	filter "system:linux"
 		pic "On"
-        systemversion "latest"
+		systemversion "latest"
 
 	filter "configurations:Debug"
 		runtime "Debug"
