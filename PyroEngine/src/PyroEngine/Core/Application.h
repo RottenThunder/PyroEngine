@@ -1,5 +1,5 @@
 #pragma once
-#include "Base.h"
+#include <string>
 
 namespace PyroEngine
 {
@@ -7,8 +7,11 @@ namespace PyroEngine
 	{
 	public:
 		Application();
-		~Application();
+		virtual ~Application();
 
-		void Run();
+		virtual void OnAttach();
+		virtual void OnDetach();
+		virtual void OnUpdate();
+		//virtual void OnEvent(Event& e)
 	};
 }
