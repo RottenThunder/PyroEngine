@@ -24,10 +24,10 @@ public:
 
 int main()
 {
-	PyroEngine::Engine* engine = new PyroEngine::Engine();
+	PyroEngine::Engine::Init();
 	MainApplication* mainApp = new MainApplication();
-	engine->AddApplication(mainApp);
-	engine->Run();
-	delete engine;
+	PyroEngine::Engine::AddApplication(mainApp);
+	PyroEngine::Engine::Run();
+	PyroEngine::Engine::Terminate();
 	delete mainApp;
 }

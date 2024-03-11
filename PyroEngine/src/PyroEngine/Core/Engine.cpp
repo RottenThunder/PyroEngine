@@ -5,12 +5,15 @@
 
 namespace PyroEngine
 {
-	Engine::Engine()
+	bool Engine::m_Running = true;
+	std::vector<Application*> Engine::m_Applications;
+
+	void Engine::Init()
 	{
 		std::cout << "Welcome To PyroEngine!" << std::endl;
 	}
 
-	Engine::~Engine()
+	void Engine::Terminate()
 	{
 		for (Application* app : m_Applications)
 			app->OnDetach();
@@ -67,7 +70,6 @@ namespace PyroEngine
 			m_Running = !glfwWindowShouldClose(WindowObject);
 		}
 
-		glfwDestroyWindow(WindowObject);
 		glfwTerminate();
 	}
 }

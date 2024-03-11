@@ -8,14 +8,14 @@ namespace PyroEngine
 	class Engine
 	{
 	private:
-		bool m_Running = true;
-		std::vector<Application*> m_Applications;
+		static bool m_Running;
+		static std::vector<Application*> m_Applications;
 	public:
-		Engine();
-		~Engine();
+		static void Init();
+		static void Terminate();
 
-		void AddApplication(Application* app);
-		void RemoveApplication(Application* app);
-		void Run();
+		static void AddApplication(Application* app);
+		static void RemoveApplication(Application* app);
+		static void Run();
 	};
 }

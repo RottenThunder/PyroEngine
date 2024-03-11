@@ -20,8 +20,8 @@ project "PyroEngine"
 	cppdialect "C++20"
 	staticruntime "On"
 
-	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
-	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
+	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
+	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
 
 	pchheader "PyroEnginePCH.h"
 	pchsource "PyroEngine/src/PyroEnginePCH.cpp"
@@ -95,8 +95,8 @@ project "PyroEditor"
 	cppdialect "C++20"
 	staticruntime "On"
 
-	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
-	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
+	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
+	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
 
 	files
 	{
@@ -113,6 +113,12 @@ project "PyroEditor"
 	links
 	{
 		"PyroEngine"
+	}
+
+	postbuildcommands
+	{
+		"{MKDIR} %[Bin/%{cfg.buildcfg}-%{cfg.system}/FinalBuild]",
+		"{COPYFILE} %[Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}/%{cfg.buildtarget.name}] %[Bin/%{cfg.buildcfg}-%{cfg.system}/FinalBuild/PyroEngine%{cfg.buildtarget.extension}]"
 	}
 
 	filter "system:windows"
@@ -159,8 +165,8 @@ project "GLFW"
 	kind "StaticLib"
 	language "C"
 
-	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
-	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
+	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
+	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
 
 	files
 	{
@@ -237,8 +243,8 @@ project "Glad"
 	language "C"
 	staticruntime "On"
 
-	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
-	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.architecture}-%{cfg.system}/%{prj.name}")
+	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
+	objdir ("Bin-Int/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
 
 	files
 	{
