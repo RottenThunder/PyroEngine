@@ -7,10 +7,12 @@ namespace PyroEngine
 {
 	bool Engine::m_Running = true;
 	std::vector<Application*> Engine::m_Applications;
+	GlobalSettings Engine::m_Settings;
 
 	void Engine::Init()
 	{
-		std::cout << "Welcome To PyroEngine!" << std::endl;
+		int init = glfwInit();
+		PYRO_ASSERT(init == GLFW_TRUE, "GLFW did not initialise");
 	}
 
 	void Engine::Terminate()
@@ -19,6 +21,8 @@ namespace PyroEngine
 			app->OnDetach();
 
 		m_Applications.clear();
+
+		glfwTerminate();
 	}
 
 	void Engine::AddApplication(Application* app)
@@ -39,37 +43,12 @@ namespace PyroEngine
 
 	void Engine::Run()
 	{
-		int init = glfwInit();
-		if (init == GLFW_FALSE)
-			return;
-
-		GLFWwindow* WindowObject = glfwCreateWindow(1280, 720, "PyroEngine", NULL, NULL);
-		PYRO_ASSERT(WindowObject, "Window Object == NULL!!!");
-
-		glfwMakeContextCurrent(WindowObject);
-
-		int gladInit = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		if (gladInit == GLFW_FALSE)
-		{
-			glfwTerminate();
-			return;
-		}
-
-		glfwSwapInterval(0);
-
 		while (m_Running)
 		{
-			glfwPollEvents();
-			glfwSwapBuffers(WindowObject);
-
 			for (Application* app : m_Applications)
 			{
 				app->OnUpdate();
 			}
-
-			m_Running = !glfwWindowShouldClose(WindowObject);
 		}
-
-		glfwTerminate();
 	}
 }

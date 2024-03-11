@@ -2,6 +2,7 @@
 #include <vector>
 #include "Core.h"
 #include "Application.h"
+#include "GlobalSettings.h"
 
 namespace PyroEngine
 {
@@ -10,6 +11,7 @@ namespace PyroEngine
 	private:
 		static bool m_Running;
 		static std::vector<Application*> m_Applications;
+		static GlobalSettings m_Settings;
 	public:
 		static void Init();
 		static void Terminate();

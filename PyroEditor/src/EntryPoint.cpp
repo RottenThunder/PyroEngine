@@ -2,9 +2,11 @@
 
 class MainApplication : public PyroEngine::Application
 {
+private:
+	PyroEngine::Window window;
 public:
 	MainApplication()
-		: Application() {}
+		: Application(), window("PyroEngine", 1280, 720) {}
 
 	void OnAttach() override
 	{
@@ -19,6 +21,7 @@ public:
 	void OnUpdate() override
 	{
 		std::cout << "MainApplication Is Updating!" << std::endl;
+		window.OnUpdate();
 	}
 };
 
