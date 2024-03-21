@@ -8,20 +8,26 @@ public:
 	MainApplication()
 		: Application(), window("PyroEngine", 1280, 720) {}
 
-	void OnAttach() override
+	virtual void OnAttach() override
 	{
-		std::cout << "MainApplication Got Attached!" << std::endl;
+		window.SetEventCallback(PYRO_BIND_EVENT_FUNCTION(MainApplication::OnEvent));
 	}
 
-	void OnDetach() override
+	virtual void OnDetach() override
 	{
-		std::cout << "MainApplication Got Detached!" << std::endl;
 	}
 
-	void OnUpdate() override
+	virtual void OnUpdate() override
 	{
-		std::cout << "MainApplication Is Updating!" << std::endl;
 		window.OnUpdate();
+	}
+
+	virtual void OnEvent(PyroEngine::Event& e) override
+	{
+		std::cout << e.GetName() << std::endl;
+
+		if (e.GetEventType() == PyroEngine::EventType::WindowClosed)
+			PyroEngine::Engine::StopRunning();
 	}
 };
 

@@ -22,4 +22,8 @@ namespace PyroEngine
 	void Application::OnUpdate()
 	{
 	}
+
+	void Application::OnEvent(Event& e)
+	{
+	}
 }

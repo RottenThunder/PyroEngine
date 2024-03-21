@@ -51,4 +51,9 @@ namespace PyroEngine
 			}
 		}
 	}
+
+	void Engine::StopRunning()
+	{
+		m_Running = false;
+	}
 }

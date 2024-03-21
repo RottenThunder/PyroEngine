@@ -19,5 +19,6 @@ namespace PyroEngine
 		static void AddApplication(Application* app);
 		static void RemoveApplication(Application* app);
 		static void Run();
+		static void StopRunning();
 	};
 }

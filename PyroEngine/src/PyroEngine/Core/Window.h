@@ -1,5 +1,8 @@
 #pragma once
-#include <string>
+#include <functional>
+#include "PyroEngine/Events/KeyEvent.h"
+#include "PyroEngine/Events/MouseEvent.h"
+#include "PyroEngine/Events/WindowEvent.h"
 
 struct GLFWwindow;
 
@@ -13,6 +16,7 @@ namespace PyroEngine
 		int m_PosX;
 		int m_PosY;
 		bool m_VSync;
+		std::function<void(Event&)> m_EventCallback;
 	};
 
 	class Window
@@ -24,13 +28,15 @@ namespace PyroEngine
 		Window(const std::string& name, int width, int height);
 		~Window();
 
-		int GetWidth() const;
-		int GetHeight() const;
-		int GetPosX() const;
-		int GetPosY() const;
+		inline int GetWidth() const;
+		inline int GetHeight() const;
+		inline int GetPosX() const;
+		inline int GetPosY() const;
 
 		void SetVSync(bool vSync);
-		bool IsVSync() const;
+		inline bool IsVSync() const;
+
+		void SetEventCallback(const std::function<void(Event&)>& callback);
 
 		void OnUpdate();
 	};

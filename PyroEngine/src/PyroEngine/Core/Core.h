@@ -24,3 +24,5 @@
 #define PYRO_ASSERT(x, message) 
 #define PYRO_REVERSE_ASSERT(x, message) 
 #endif
+
+#define PYRO_BIND_EVENT_FUNCTION(x) std::bind(&x, this, std::placeholders::_1)

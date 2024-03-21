@@ -4,7 +4,7 @@ namespace PyroEngine
 {
 	enum GraphicsAPI
 	{
-		None = 0,
+		GraphicsAPINone = 0,
 		OpenGL = 1
 	};
 }

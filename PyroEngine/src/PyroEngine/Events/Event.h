@@ -5,7 +5,7 @@ namespace PyroEngine
 {
 	enum EventType
 	{
-		None = 0,
+		EventTypeNone = 0,
 		WindowClosed, WindowResized, WindowMoved,
 		KeyPressed, KeyReleased,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
