@@ -1,33 +1,26 @@
 #include <PyroEngine.h>
 
-class MainApplication : public PyroEngine::Application
+class MainApplication : public PyroEngine::WindowApplication
 {
-private:
-	PyroEngine::Window window;
 public:
 	MainApplication()
-		: Application(), window("PyroEngine", 1280, 720) {}
+		: WindowApplication() {}
 
-	virtual void OnAttach() override
-	{
-		window.SetEventCallback(PYRO_BIND_EVENT_FUNCTION(MainApplication::OnEvent));
-	}
-
-	virtual void OnDetach() override
+	virtual void OnWindowAttach() override
 	{
 	}
 
-	virtual void OnUpdate() override
+	virtual void OnWindowDetach() override
 	{
-		window.OnUpdate();
 	}
 
-	virtual void OnEvent(PyroEngine::Event& e) override
+	virtual void OnWindowUpdate() override
+	{
+	}
+
+	virtual void OnWindowEvent(PyroEngine::Event& e) override
 	{
 		std::cout << e.GetName() << std::endl;
-
-		if (e.GetEventType() == PyroEngine::EventType::WindowClosed)
-			PyroEngine::Engine::StopRunning();
 	}
 };
 
