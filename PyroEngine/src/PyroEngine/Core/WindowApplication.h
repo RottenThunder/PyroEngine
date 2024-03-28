@@ -8,7 +8,7 @@ namespace PyroEngine
 {
 	class WindowApplication : public Application
 	{
-	private:
+	protected:
 		Window m_Window;
 	public:
 		WindowApplication(const std::string& name = "PyroEngine", int width = 1280, int height = 720) : Application(), m_Window(name, width, height) {}

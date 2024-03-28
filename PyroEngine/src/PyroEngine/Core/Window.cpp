@@ -118,24 +118,48 @@ namespace PyroEngine
 		glfwDestroyWindow(m_Window);
 	}
 
-	inline int Window::GetWidth() const
+	int Window::GetWidth() const
 	{
 		return m_Properties.m_Width;
 	}
 
-	inline int Window::GetHeight() const
+	int Window::GetHeight() const
 	{
 		return m_Properties.m_Height;
 	}
 
-	inline int Window::GetPosX() const
+	int Window::GetPosX() const
 	{
 		return m_Properties.m_PosX;
 	}
 
-	inline int Window::GetPosY() const
+	int Window::GetPosY() const
 	{
 		return m_Properties.m_PosY;
+	}
+
+	bool Window::IsKeyPressed(int keyCode) const
+	{
+		return glfwGetKey(m_Window, keyCode) == GLFW_PRESS;
+	}
+
+	bool Window::IsMouseButtonPressed(int mouseButton) const
+	{
+		return glfwGetMouseButton(m_Window, mouseButton) == GLFW_PRESS;
+	}
+
+	double Window::GetMouseX() const
+	{
+		double xPos;
+		glfwGetCursorPos(m_Window, &xPos, NULL);
+		return xPos;
+	}
+
+	double Window::GetMouseY() const
+	{
+		double yPos;
+		glfwGetCursorPos(m_Window, NULL, &yPos);
+		return yPos;
 	}
 
 	void Window::SetVSync(bool vSync)
@@ -148,7 +172,7 @@ namespace PyroEngine
 		m_Properties.m_VSync = vSync;
 	}
 
-	inline bool Window::IsVSync() const
+	bool Window::IsVSync() const
 	{
 		return m_Properties.m_VSync;
 	}
@@ -158,7 +182,7 @@ namespace PyroEngine
 		m_Properties.m_EventCallback = callback;
 	}
 
-	void Window::OnUpdate()
+	void Window::OnUpdate() const
 	{
 		glfwPollEvents();
 		glfwSwapBuffers(m_Window);

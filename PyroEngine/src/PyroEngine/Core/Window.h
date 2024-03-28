@@ -28,16 +28,21 @@ namespace PyroEngine
 		Window(const std::string& name, int width, int height);
 		~Window();
 
-		inline int GetWidth() const;
-		inline int GetHeight() const;
-		inline int GetPosX() const;
-		inline int GetPosY() const;
+		int GetWidth() const;
+		int GetHeight() const;
+		int GetPosX() const;
+		int GetPosY() const;
+
+		bool IsKeyPressed(int keyCode) const;
+		bool IsMouseButtonPressed(int mouseButton) const;
+		double GetMouseX() const;
+		double GetMouseY() const;
 
 		void SetVSync(bool vSync);
-		inline bool IsVSync() const;
+		bool IsVSync() const;
 
 		void SetEventCallback(const std::function<void(Event&)>& callback);
 
-		void OnUpdate();
+		void OnUpdate() const;
 	};
 }

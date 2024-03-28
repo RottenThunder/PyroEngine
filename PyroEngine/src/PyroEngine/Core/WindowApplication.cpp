@@ -17,9 +17,9 @@ namespace PyroEngine
 
 	void WindowApplication::OnUpdate()
 	{
-		m_Window.OnUpdate();
-
 		OnWindowUpdate();
+
+		m_Window.OnUpdate();
 	}
 
 	void WindowApplication::OnEvent(Event& e)
