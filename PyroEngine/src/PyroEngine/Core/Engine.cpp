@@ -56,4 +56,9 @@ namespace PyroEngine
 	{
 		m_Running = false;
 	}
+
+	GlobalSettings& Engine::GetGlobalSettings()
+	{
+		return m_Settings;
+	}
 }

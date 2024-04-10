@@ -20,5 +20,7 @@ namespace PyroEngine
 		static void RemoveApplication(Application* app);
 		static void Run();
 		static void StopRunning();
+
+		static GlobalSettings& GetGlobalSettings();
 	};
 }
