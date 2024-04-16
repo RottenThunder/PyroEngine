@@ -10,5 +10,7 @@ namespace PyroEngine
 	public:
 		OpenGLVertexBuffer(double* vertices, uint64_t size);
 		virtual ~OpenGLVertexBuffer();
+
+		uint32_t GetRendererID() const { return m_RendererID; }
 	};
 }

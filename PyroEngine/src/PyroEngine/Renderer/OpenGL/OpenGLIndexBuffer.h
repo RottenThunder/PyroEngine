@@ -10,5 +10,7 @@ namespace PyroEngine
 	public:
 		OpenGLIndexBuffer(uint32_t* indices, uint64_t count);
 		virtual ~OpenGLIndexBuffer();
+
+		uint32_t GetRendererID() const { return m_RendererID; }
 	};
 }
