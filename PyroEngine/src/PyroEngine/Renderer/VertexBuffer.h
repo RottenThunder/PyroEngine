@@ -1,5 +1,5 @@
 #pragma once
-#include "PyroEngine/Core/Core.h"
+#include "VertexBufferLayout.h"
 
 namespace PyroEngine
 {
@@ -7,6 +7,9 @@ namespace PyroEngine
 	{
 	public:
 		virtual ~VertexBuffer() {}
+
+		virtual const VertexBufferLayout& GetLayout() const = 0;
+		virtual void SetLayout(const VertexBufferLayout& layout) = 0;
 
 		static VertexBuffer* Create(double* vertices, uint64_t size);
 	};
