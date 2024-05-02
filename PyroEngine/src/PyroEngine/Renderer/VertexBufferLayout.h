@@ -152,7 +152,7 @@ namespace PyroEngine
 
 		std::vector<VertexBufferElement>::iterator begin() { return m_Elements.begin(); }
 		std::vector<VertexBufferElement>::iterator end() { return m_Elements.end(); }
-		std::vector<VertexBufferElement>::const_iterator cbegin() const { return m_Elements.cbegin(); }
-		std::vector<VertexBufferElement>::const_iterator cend() const { return m_Elements.cend(); }
+		std::vector<VertexBufferElement>::const_iterator begin() const { return m_Elements.begin(); }
+		std::vector<VertexBufferElement>::const_iterator end() const { return m_Elements.end(); }
 	};
 }

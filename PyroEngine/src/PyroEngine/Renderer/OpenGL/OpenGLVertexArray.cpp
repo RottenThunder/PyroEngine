@@ -6,6 +6,54 @@
 
 namespace PyroEngine
 {
+	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
+	{
+		switch (type)
+		{
+		case ShaderDataType::Float:
+			return GL_FLOAT;
+		case ShaderDataType::Float2:
+			return GL_FLOAT;
+		case ShaderDataType::Float3:
+			return GL_FLOAT;
+		case ShaderDataType::Float4:
+			return GL_FLOAT;
+		case ShaderDataType::Double:
+			return GL_DOUBLE;
+		case ShaderDataType::Double2:
+			return GL_DOUBLE;
+		case ShaderDataType::Double3:
+			return GL_DOUBLE;
+		case ShaderDataType::Double4:
+			return GL_DOUBLE;
+		case ShaderDataType::Int:
+			return GL_INT;
+		case ShaderDataType::Int2:
+			return GL_INT;
+		case ShaderDataType::Int3:
+			return GL_INT;
+		case ShaderDataType::Int4:
+			return GL_INT;
+		case ShaderDataType::Bool:
+			return GL_BOOL;
+		case ShaderDataType::Mat2x2f:
+			return GL_FLOAT;
+		case ShaderDataType::Mat3x3f:
+			return GL_FLOAT;
+		case ShaderDataType::Mat4x4f:
+			return GL_FLOAT;
+		case ShaderDataType::Mat2x2d:
+			return GL_DOUBLE;
+		case ShaderDataType::Mat3x3d:
+			return GL_DOUBLE;
+		case ShaderDataType::Mat4x4d:
+			return GL_DOUBLE;
+		}
+
+		PYRO_ASSERT(false, "Unknown ShaderDataType!");
+		return 0;
+	}
+
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
 		glCreateVertexArrays(1, &m_RendererID);
@@ -18,10 +66,18 @@ namespace PyroEngine
 
 	void OpenGLVertexArray::AddVertexBuffer(VertexBuffer* vertexBuffer)
 	{
+		PYRO_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
+
 		glBindVertexArray(m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, ((OpenGLVertexBuffer*)vertexBuffer)->GetRendererID());
 
-		//Do OpenGL calls to configure the layout of the buffers
+		uint32_t index = 0;
+		for (const auto& element : vertexBuffer->GetLayout())
+		{
+			glEnableVertexAttribArray(index);
+			glVertexAttribPointer(index, element.GetComponentCount(), ShaderDataTypeToOpenGLBaseType(element.m_Type), false, vertexBuffer->GetLayout().GetStride(), (const void*)(const uint64_t)element.m_Offset);
+			index++;
+		}
 
 		m_VertexBuffers.push_back(vertexBuffer);
 	}
