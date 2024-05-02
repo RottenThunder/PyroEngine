@@ -14,3 +14,10 @@
 #include "PyroEngine/Events/MouseEvent.h"
 #include "PyroEngine/Events/WindowEvent.h"
 //-------------------------------------------------------------------------
+
+//---RENDERER--------------------------------------------------------------
+#include "PyroEngine/Renderer/IndexBuffer.h"
+#include "PyroEngine/Renderer/Shader.h"
+#include "PyroEngine/Renderer/VertexArray.h"
+#include "PyroEngine/Renderer/VertexBuffer.h"
+//-------------------------------------------------------------------------

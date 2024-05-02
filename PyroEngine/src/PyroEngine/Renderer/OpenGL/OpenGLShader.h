@@ -11,5 +11,7 @@ namespace PyroEngine
 	public:
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();
+
+		uint32_t GetRendererID() const { return RendererID; }
 	};
 }
