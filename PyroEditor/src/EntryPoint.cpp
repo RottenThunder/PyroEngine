@@ -15,19 +15,19 @@ public:
 	{
 		m_VertexArray = PyroEngine::VertexArray::Create();
 
-		double SquareVertices[4 * 6] =
+		float SquareVertices[4 * 6] =
 		{
-			-0.75, -0.75, 1.0, 0.0, 0.0, 1.0,//Bottom-Left
-			0.75, -0.75, 1.0, 0.0, 0.0, 1.0,//Bottom-Right
-			0.75, 0.75, 1.0, 0.0, 0.0, 1.0,//Top-Right
-			-0.75, 0.75, 1.0, 0.0, 0.0, 1.0, //Top-Left
+			-0.75f, -0.75f, 1.0f, 0.0f, 0.0f, 1.0f,//Bottom-Left
+			0.75f, -0.75f, 1.0f, 1.0f, 0.0f, 1.0f,//Bottom-Right
+			0.75f, 0.75f, 1.0f, 1.0f, 1.0f, 1.0f,//Top-Right
+			-0.75f, 0.75f, 0.0f, 1.0f, 1.0f, 1.0f, //Top-Left
 		};
 
 		m_VertexBuffer = PyroEngine::VertexBuffer::Create(SquareVertices, sizeof(SquareVertices));
 
 		m_VertexBuffer->SetLayout({
-			{ PyroEngine::ShaderDataType::Double2, "i_Position" },
-			{ PyroEngine::ShaderDataType::Double4, "i_Colour" }
+			{ PyroEngine::ShaderDataType::Float2, "i_Position" },
+			{ PyroEngine::ShaderDataType::Float4, "i_Colour" }
 			});
 
 		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
@@ -37,12 +37,12 @@ public:
 
 		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
 
-		std::string vertexSrcSquare = R"(
-			#version 410 core
-			layout(location = 0) in dvec2 i_Position;
-            layout(location = 1) in dvec4 i_Colour;
-			out dvec2 v_Position;
-            out dvec4 v_Colour;
+		std::string vertexSrc = R"(
+			#version 330 core
+			layout(location = 0) in vec2 i_Position;
+            layout(location = 1) in vec4 i_Colour;
+			out vec2 v_Position;
+            out vec4 v_Colour;
 			void main()
 			{
 				v_Position = i_Position;
@@ -51,18 +51,18 @@ public:
 			}
 		)";
 
-		std::string fragmentSrcSquare = R"(
-			#version 410 core
+		std::string fragmentSrc = R"(
+			#version 330 core
 			layout(location = 0) out vec4 Colour;
-			flat in dvec2 v_Position;
-            flat in dvec4 v_Colour;
+			in vec2 v_Position;
+            in vec4 v_Colour;
 			void main()
 			{
-				Colour = vec4(0.1, v_Position + 0.5, 1.0);
+				Colour = v_Colour;
 			}
 		)";
 
-		m_Shader = PyroEngine::Shader::Create(vertexSrcSquare, fragmentSrcSquare);
+		m_Shader = PyroEngine::Shader::Create(vertexSrc, fragmentSrc);
 
 		p_VertexArray = m_VertexArray;
 		p_Shader = m_Shader;

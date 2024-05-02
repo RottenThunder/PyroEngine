@@ -5,7 +5,7 @@
 
 namespace PyroEngine
 {
-	VertexBuffer* VertexBuffer::Create(double* vertices, uint64_t size)
+	VertexBuffer* VertexBuffer::Create(float* vertices, uint64_t size)
 	{
 		switch (Engine::GetGlobalSettings().globalAPI)
 		{

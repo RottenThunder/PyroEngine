@@ -5,7 +5,7 @@ namespace PyroEngine
 {
 	class IndexBuffer
 	{
-	private:
+	protected:
 		uint64_t m_Count;
 	public:
 		virtual ~IndexBuffer() {}

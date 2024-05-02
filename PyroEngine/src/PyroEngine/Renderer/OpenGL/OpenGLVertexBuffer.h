@@ -9,7 +9,7 @@ namespace PyroEngine
 		VertexBufferLayout m_Layout;
 		uint32_t m_RendererID;
 	public:
-		OpenGLVertexBuffer(double* vertices, uint64_t size);
+		OpenGLVertexBuffer(float* vertices, uint64_t size);
 		virtual ~OpenGLVertexBuffer();
 
 		virtual const VertexBufferLayout& GetLayout() const override { return m_Layout; }

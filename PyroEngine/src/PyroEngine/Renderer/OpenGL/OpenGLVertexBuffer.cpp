@@ -4,7 +4,7 @@
 
 namespace PyroEngine
 {
-	OpenGLVertexBuffer::OpenGLVertexBuffer(double* vertices, uint64_t size)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint64_t size)
 	{
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
