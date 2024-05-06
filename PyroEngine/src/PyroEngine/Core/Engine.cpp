@@ -1,5 +1,6 @@
 #include "PyroEnginePCH.h"
 #include "Engine.h"
+#include "ProcessorAnalyser.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -13,6 +14,25 @@ namespace PyroEngine
 	{
 		int init = glfwInit();
 		PYRO_ASSERT(init == GLFW_TRUE, "GLFW did not initialise");
+
+		ProcessorAnalyser::Analyse();
+		std::cout << "CPU Name: " << ProcessorAnalyser::s_ProcessorName << std::endl;
+		std::cout << "CPU Is Intel: " << ProcessorAnalyser::s_IsIntel << std::endl;
+		std::cout << "CPU Is AMD: " << ProcessorAnalyser::s_IsAMD << std::endl;
+		std::cout << "CPU MMX Functionality: " << ProcessorAnalyser::s_MMX << std::endl;
+		std::cout << "CPU SSE 1.0 Functionality: " << ProcessorAnalyser::s_SSE << std::endl;
+		std::cout << "CPU SSE 2.0 Functionality: " << ProcessorAnalyser::s_SSE2 << std::endl;
+		std::cout << "CPU SSE 3.0 Functionality: " << ProcessorAnalyser::s_SSE3 << std::endl;
+		std::cout << "CPU SSSE 3.0 Functionality: " << ProcessorAnalyser::s_SSSE3 << std::endl;
+		std::cout << "CPU SSE 4.1 Functionality: " << ProcessorAnalyser::s_SSE41 << std::endl;
+		std::cout << "CPU SSE 4.2 Functionality: " << ProcessorAnalyser::s_SSE42 << std::endl;
+		std::cout << "CPU AVX 1.0 Functionality: " << ProcessorAnalyser::s_AVX << std::endl;
+		std::cout << "CPU AVX 2.0 Functionality: " << ProcessorAnalyser::s_AVX2 << std::endl;
+		std::cout << "CPU FMA Functionality: " << ProcessorAnalyser::s_FMA << std::endl;
+		std::cout << "CPU AVX512 Functionality: " << ProcessorAnalyser::s_AVX512F << std::endl;
+		std::cout << "CPU AVX512 PF Functionality: " << ProcessorAnalyser::s_AVX512PF << std::endl;
+		std::cout << "CPU AVX512 ER Functionality: " << ProcessorAnalyser::s_AVX512ER << std::endl;
+		std::cout << "CPU AVX512 CD Functionality: " << ProcessorAnalyser::s_AVX512CD << std::endl;
 	}
 
 	void Engine::Terminate()
