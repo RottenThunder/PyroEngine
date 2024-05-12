@@ -1,6 +1,7 @@
 #include "PyroEnginePCH.h"
 #include "Engine.h"
 #include "ProcessorAnalyser.h"
+#include "PyroEngine/Maths/MathF.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -33,6 +34,8 @@ namespace PyroEngine
 		std::cout << "CPU AVX512 PF Functionality: " << ProcessorAnalyser::s_AVX512PF << std::endl;
 		std::cout << "CPU AVX512 ER Functionality: " << ProcessorAnalyser::s_AVX512ER << std::endl;
 		std::cout << "CPU AVX512 CD Functionality: " << ProcessorAnalyser::s_AVX512CD << std::endl;
+
+		MathF::Init();
 	}
 
 	void Engine::Terminate()

@@ -1,5 +1,6 @@
 #include "PyroEnginePCH.h"
 #include "Vector4.h"
+#include "PyroEngine/Maths/MathF.h"
 
 namespace PyroEngine
 {
@@ -15,6 +16,17 @@ namespace PyroEngine
 
 	void Vector4::Reset()
 	{
+		MathF::ResetVector4(&x);
+	}
+
+	void Vector4::Add(Vector4& v)
+	{
+		MathF::AddVector4(&x, &x, &v.x);
+	}
+
+	void Vector4::Sub(Vector4& v)
+	{
+		MathF::SubVector4(&x, &x, &v.x);
 	}
 
 	float Vector4::SqMagnitude()

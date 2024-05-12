@@ -2,15 +2,17 @@
 
 namespace PyroEngine
 {
-	class Vector4
+	struct Vector4
 	{
-	public:
 		float x, y, z, w;
 
 		Vector4();
 		Vector4(float ix, float iy, float iz, float iw);
 
 		void Reset();
+
+		void Add(Vector4& v);
+		void Sub(Vector4& v);
 
 		float SqMagnitude();
 		float Magnitude();
