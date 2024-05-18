@@ -15,6 +15,12 @@
 #include "PyroEngine/Events/WindowEvent.h"
 //-------------------------------------------------------------------------
 
+//---MATHS-----------------------------------------------------------------
+#include "PyroEngine/Maths/Vectors/Vector2.h"
+#include "PyroEngine/Maths/Vectors/Vector3.h"
+#include "PyroEngine/Maths/Vectors/Vector4.h"
+//-------------------------------------------------------------------------
+
 //---RENDERER--------------------------------------------------------------
 #include "PyroEngine/Renderer/IndexBuffer.h"
 #include "PyroEngine/Renderer/Shader.h"

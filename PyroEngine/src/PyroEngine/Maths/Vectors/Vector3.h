@@ -14,6 +14,8 @@ namespace PyroEngine
 		void Add(Vector3& v);
 		void Sub(Vector3& v);
 
+		float Dot(Vector3& v);
+
 		float SqMagnitude();
 		float Magnitude();
 

@@ -29,17 +29,23 @@ namespace PyroEngine
 		MathF::SubVector2(&x, &x, &v.x);
 	}
 
+	float Vector2::Dot(Vector2& v)
+	{
+		return MathF::DotVector2(&x, &v.x);
+	}
+
 	float Vector2::SqMagnitude()
 	{
-		return 0.0f;
+		return MathF::SqMagnitudeVector2(&x);
 	}
 
 	float Vector2::Magnitude()
 	{
-		return 0.0f;
+		return MathF::MagnitudeVector2(&x);
 	}
 
 	void Vector2::Normalise()
 	{
+		MathF::NormaliseVector2(&x, &x);
 	}
 }
