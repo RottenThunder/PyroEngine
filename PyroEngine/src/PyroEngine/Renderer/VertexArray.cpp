@@ -1,13 +1,13 @@
 #include "PyroEnginePCH.h"
 #include "VertexArray.h"
-#include "PyroEngine/Core/Engine.h"
+#include "PyroEngine/Core/GlobalSettings.h"
 #include "OpenGL/OpenGLVertexArray.h"
 
 namespace PyroEngine
 {
 	VertexArray* VertexArray::Create()
 	{
-		switch (Engine::GetGlobalSettings().globalAPI)
+		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
 			PYRO_ASSERT(false, "A Vertex Array is about to be created with no Graphics API");

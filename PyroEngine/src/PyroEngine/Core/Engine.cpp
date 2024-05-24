@@ -9,7 +9,6 @@ namespace PyroEngine
 {
 	bool Engine::m_Running = true;
 	std::vector<Application*> Engine::m_Applications;
-	GlobalSettings Engine::m_Settings;
 
 	void Engine::Init()
 	{
@@ -78,10 +77,5 @@ namespace PyroEngine
 	void Engine::StopRunning()
 	{
 		m_Running = false;
-	}
-
-	GlobalSettings& Engine::GetGlobalSettings()
-	{
-		return m_Settings;
 	}
 }

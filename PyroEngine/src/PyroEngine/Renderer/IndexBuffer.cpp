@@ -1,13 +1,13 @@
 #include "PyroEnginePCH.h"
 #include "IndexBuffer.h"
-#include "PyroEngine/Core/Engine.h"
+#include "PyroEngine/Core/GlobalSettings.h"
 #include "OpenGL/OpenGLIndexBuffer.h"
 
 namespace PyroEngine
 {
 	IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint64_t count)
 	{
-		switch (Engine::GetGlobalSettings().globalAPI)
+		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
 			PYRO_ASSERT(false, "An Index Buffer is about to be created with no Graphics API");

@@ -5,6 +5,6 @@ namespace PyroEngine
 {
 	struct GlobalSettings
 	{
-		GraphicsAPI globalAPI;
+		static GraphicsAPI s_GraphicsAPI;
 	};
 }

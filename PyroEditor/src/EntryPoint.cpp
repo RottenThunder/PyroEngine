@@ -87,7 +87,7 @@ public:
 
 int main()
 {
-	PyroEngine::Engine::GetGlobalSettings().globalAPI = PyroEngine::GraphicsAPI::OpenGL;
+	PyroEngine::GlobalSettings::s_GraphicsAPI = PyroEngine::GraphicsAPI::OpenGL;
 	PyroEngine::Engine::Init();
 	MainApplication* mainApp = new MainApplication();
 	PyroEngine::Engine::AddApplication(mainApp);
