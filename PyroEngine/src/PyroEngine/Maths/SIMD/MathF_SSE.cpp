@@ -18,7 +18,8 @@ namespace PyroEngine
 
 	void MathF_SSE::ResetVector4(float* dst)
 	{
-		_mm_storeu_ps(dst, _mm_setzero_ps());
+		SIMDRegister128 zero(true);
+		zero.Store(dst);
 	}
 
 	void MathF_SSE::AddVector2(float* dst, float* vec1, float* vec2)
@@ -36,7 +37,10 @@ namespace PyroEngine
 
 	void MathF_SSE::AddVector4(float* dst, float* vec1, float* vec2)
 	{
-		_mm_storeu_ps(dst, _mm_add_ps(_mm_loadu_ps(vec1), _mm_loadu_ps(vec2)));
+		SIMDRegister128 vecReg1(vec1);
+		SIMDRegister128 vecReg2(vec2);
+		vecReg1 += vecReg2;
+		vecReg1.Store(dst);
 	}
 
 	void MathF_SSE::SubVector2(float* dst, float* vec1, float* vec2)
@@ -54,7 +58,10 @@ namespace PyroEngine
 
 	void MathF_SSE::SubVector4(float* dst, float* vec1, float* vec2)
 	{
-		_mm_storeu_ps(dst, _mm_sub_ps(_mm_loadu_ps(vec1), _mm_loadu_ps(vec2)));
+		SIMDRegister128 vecReg1(vec1);
+		SIMDRegister128 vecReg2(vec2);
+		vecReg1 -= vecReg2;
+		vecReg1.Store(dst);
 	}
 
 	float MathF_SSE::DotVector2(float* vec1, float* vec2)
@@ -74,8 +81,10 @@ namespace PyroEngine
 
 	float MathF_SSE::DotVector4(float* vec1, float* vec2)
 	{
-		__m128 vecSq = _mm_mul_ps(_mm_loadu_ps(vec1), _mm_loadu_ps(vec2));
-		return vecSq.m128_f32[0] + vecSq.m128_f32[1] + vecSq.m128_f32[2] + vecSq.m128_f32[3];
+		SIMDRegister128 vecReg1(vec1);
+		SIMDRegister128 vecReg2(vec2);
+		vecReg1 *= vecReg2;
+		return vecReg1[0] + vecReg1[1] + vecReg1[2] + vecReg1[3];
 	}
 
 	float MathF_SSE::SqMagnitudeVector2(float* vec1)
@@ -95,8 +104,9 @@ namespace PyroEngine
 
 	float MathF_SSE::SqMagnitudeVector4(float* vec1)
 	{
-		__m128 vecSq = _mm_mul_ps(_mm_loadu_ps(vec1), _mm_loadu_ps(vec1));
-		return vecSq.m128_f32[0] + vecSq.m128_f32[1] + vecSq.m128_f32[2] + vecSq.m128_f32[3];
+		SIMDRegister128 vecReg(vec1);
+		vecReg *= vecReg;
+		return vecReg[0] + vecReg[1] + vecReg[2] + vecReg[3];
 	}
 
 	float MathF_SSE::MagnitudeVector2(float* vec1)
@@ -116,9 +126,11 @@ namespace PyroEngine
 
 	float MathF_SSE::MagnitudeVector4(float* vec1)
 	{
-		__m128 vecSq = _mm_mul_ps(_mm_loadu_ps(vec1), _mm_loadu_ps(vec1));
-		vecSq.m128_f32[0] += vecSq.m128_f32[1] + vecSq.m128_f32[2] + vecSq.m128_f32[3];
-		return _mm_sqrt_ps(vecSq).m128_f32[0];
+		SIMDRegister128 vecReg(vec1);
+		vecReg *= vecReg;
+		vecReg[0] += vecReg[1] + vecReg[2] + vecReg[3];
+		vecReg.Sqrt();
+		return vecReg[0];
 	}
 
 	void MathF_SSE::NormaliseVector2(float* dst, float* vec1)
@@ -143,12 +155,15 @@ namespace PyroEngine
 
 	void MathF_SSE::NormaliseVector4(float* dst, float* vec1)
 	{
-		__m128 vecSq = _mm_mul_ps(_mm_loadu_ps(vec1), _mm_loadu_ps(vec1));
-		vecSq.m128_f32[0] += vecSq.m128_f32[1] + vecSq.m128_f32[2] + vecSq.m128_f32[3];
-		vecSq = _mm_sqrt_ps(vecSq);
-		vecSq.m128_f32[1] = vecSq.m128_f32[0];
-		vecSq.m128_f32[2] = vecSq.m128_f32[0];
-		vecSq.m128_f32[3] = vecSq.m128_f32[0];
-		_mm_storeu_ps(dst, _mm_div_ps(_mm_loadu_ps(vec1), vecSq));
+		SIMDRegister128 vecReg(vec1);
+		SIMDRegister128 vecRegClone(vec1);
+		vecReg *= vecReg;
+		vecReg[0] += vecReg[1] + vecReg[2] + vecReg[3];
+		vecReg.Sqrt();
+		vecReg[1] = vecReg[0];
+		vecReg[2] = vecReg[0];
+		vecReg[3] = vecReg[0];
+		vecRegClone /= vecReg;
+		vecRegClone.Store(dst);
 	}
 }
