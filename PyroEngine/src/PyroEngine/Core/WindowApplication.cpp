@@ -9,6 +9,10 @@ namespace PyroEngine
 		m_Window.SetEventCallback(PYRO_BIND_EVENT_FUNCTION(WindowApplication::OnEvent));
 
 		OnWindowAttach();
+
+		glUseProgram(((OpenGLShader*)p_Shader)->GetRendererID());
+		GLint location = glGetUniformLocation(((OpenGLShader*)p_Shader)->GetRendererID(), "u_Texture");
+		glUniform1i(location, 0);
 	}
 
 	void WindowApplication::OnDetach()
@@ -23,6 +27,8 @@ namespace PyroEngine
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, ((OpenGLTexture*)p_Texture)->GetRendererID());
 		glUseProgram(((OpenGLShader*)p_Shader)->GetRendererID());
 		glBindVertexArray(((OpenGLVertexArray*)p_VertexArray)->GetRendererID());
 		glDrawElements(GL_TRIANGLES, p_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);

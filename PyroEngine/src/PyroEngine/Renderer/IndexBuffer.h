@@ -8,7 +8,7 @@ namespace PyroEngine
 	protected:
 		uint64_t m_Count;
 	public:
-		virtual ~IndexBuffer() {}
+		virtual ~IndexBuffer() = default;
 
 		uint64_t GetCount() const { return m_Count; }
 

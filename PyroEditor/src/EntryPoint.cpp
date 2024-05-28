@@ -7,6 +7,7 @@ private:
 	PyroEngine::VertexBuffer* m_VertexBuffer = nullptr;
 	PyroEngine::IndexBuffer* m_IndexBuffer = nullptr;
 	PyroEngine::Shader* m_Shader = nullptr;
+	PyroEngine::Texture* m_Texture = nullptr;
 public:
 	MainApplication()
 		: WindowApplication() {}
@@ -15,18 +16,19 @@ public:
 	{
 		m_VertexArray = PyroEngine::VertexArray::Create();
 
-		float SquareVertices[4 * 6] =
+		float SquareVertices[4 * 8] =
 		{
-			-0.75f, -0.75f, 1.0f, 0.0f, 0.0f, 1.0f,//Bottom-Left
-			0.75f, -0.75f, 1.0f, 1.0f, 0.0f, 1.0f,//Bottom-Right
-			0.75f, 0.75f, 1.0f, 1.0f, 1.0f, 1.0f,//Top-Right
-			-0.75f, 0.75f, 0.0f, 1.0f, 1.0f, 1.0f, //Top-Left
+			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,//Bottom-Left
+			0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,//Bottom-Right
+			0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,//Top-Right
+			-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, //Top-Left
 		};
 
 		m_VertexBuffer = PyroEngine::VertexBuffer::Create(SquareVertices, sizeof(SquareVertices));
 
 		m_VertexBuffer->SetLayout({
 			{ PyroEngine::ShaderDataType::Float2, "i_Position" },
+			{ PyroEngine::ShaderDataType::Float2, "i_TexCoord" },
 			{ PyroEngine::ShaderDataType::Float4, "i_Colour" }
 			});
 
@@ -40,12 +42,13 @@ public:
 		std::string vertexSrc = R"(
 			#version 330 core
 			layout(location = 0) in vec2 i_Position;
-            layout(location = 1) in vec4 i_Colour;
-			out vec2 v_Position;
+			layout(location = 1) in vec2 i_TexCoord;
+            layout(location = 2) in vec4 i_Colour;
+			out vec2 v_TexCoord;
             out vec4 v_Colour;
 			void main()
 			{
-				v_Position = i_Position;
+				v_TexCoord = i_TexCoord;
                 v_Colour = i_Colour;
 				gl_Position = vec4(i_Position, 0.0, 1.0);
 			}
@@ -54,18 +57,27 @@ public:
 		std::string fragmentSrc = R"(
 			#version 330 core
 			layout(location = 0) out vec4 Colour;
-			in vec2 v_Position;
+			in vec2 v_TexCoord;
             in vec4 v_Colour;
+			uniform sampler2D u_Texture;
 			void main()
 			{
-				Colour = v_Colour;
+				Colour = texture(u_Texture, v_TexCoord) * v_Colour;
 			}
 		)";
 
 		m_Shader = PyroEngine::Shader::Create(vertexSrc, fragmentSrc);
 
+		m_Texture = PyroEngine::Texture::Create(2, 2);
+		uint8_t textureData[16] = { 0xFF, 0x00, 0x00, 0xFF,
+									0x00, 0xFF, 0x00, 0xFF,
+									0x00, 0x00, 0xFF, 0xFF,
+									0xFF, 0xFF, 0x00, 0xFF };
+		m_Texture->SetData(textureData, 16);
+
 		p_VertexArray = m_VertexArray;
 		p_Shader = m_Shader;
+		p_Texture = m_Texture;
 	}
 
 	virtual void OnWindowDetach() override
@@ -74,6 +86,7 @@ public:
 		delete m_VertexBuffer;
 		delete m_IndexBuffer;
 		delete m_Shader;
+		delete m_Texture;
 	}
 
 	virtual void OnWindowUpdate() override
