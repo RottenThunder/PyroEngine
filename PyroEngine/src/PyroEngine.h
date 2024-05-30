@@ -5,6 +5,7 @@
 //---CORE------------------------------------------------------------------
 #include "PyroEngine/Core/Engine.h"
 #include "PyroEngine/Core/GlobalSettings.h"
+#include "PyroEngine/Core/Logger.h"
 #include "PyroEngine/Core/WindowApplication.h"
 //-------------------------------------------------------------------------
 

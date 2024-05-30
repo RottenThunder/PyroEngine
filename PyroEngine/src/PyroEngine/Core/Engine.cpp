@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "ProcessorAnalyser.h"
 #include "PyroEngine/Maths/MathF.h"
+#include "Logger.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -12,8 +13,12 @@ namespace PyroEngine
 
 	void Engine::Init()
 	{
+		Logger::Init();
+
 		int init = glfwInit();
 		PYRO_ASSERT(init == GLFW_TRUE, "GLFW did not initialise");
+
+		PYRO_LOG_ARGS_TRACE("Hello World {0}", 1);
 
 		ProcessorAnalyser::Analyse();
 		std::cout << "CPU Name: " << ProcessorAnalyser::s_ProcessorName << std::endl;
@@ -45,6 +50,8 @@ namespace PyroEngine
 		m_Applications.clear();
 
 		glfwTerminate();
+
+		Logger::Terminate();
 	}
 
 	void Engine::AddApplication(Application* app)

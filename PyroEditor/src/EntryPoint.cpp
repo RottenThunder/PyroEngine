@@ -98,7 +98,12 @@ public:
 	}
 };
 
-int main()
+#if defined PYRO_PLATFORM_WINDOWS && PYRO_CONFIG_RELEASE
+
+#include <Windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+	PSTR lpCmdLine, int nCmdShow)
 {
 	PyroEngine::GlobalSettings::s_GraphicsAPI = PyroEngine::GraphicsAPI::OpenGL;
 	PyroEngine::Engine::Init();
@@ -107,4 +112,21 @@ int main()
 	PyroEngine::Engine::Run();
 	PyroEngine::Engine::Terminate();
 	delete mainApp;
+	return 0;
 }
+
+#else
+
+int main(int argc, char** argv)
+{
+	PyroEngine::GlobalSettings::s_GraphicsAPI = PyroEngine::GraphicsAPI::OpenGL;
+	PyroEngine::Engine::Init();
+	MainApplication* mainApp = new MainApplication();
+	PyroEngine::Engine::AddApplication(mainApp);
+	PyroEngine::Engine::Run();
+	PyroEngine::Engine::Terminate();
+	delete mainApp;
+	return 0;
+}
+
+#endif

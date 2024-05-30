@@ -90,7 +90,6 @@ project "PyroEngine"
 
 project "PyroEditor"
 	location "PyroEditor"
-	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++20"
 	staticruntime "On"
@@ -151,11 +150,13 @@ project "PyroEditor"
 		}
 
 	filter "configurations:Debug"
+		kind "ConsoleApp"
 		defines "PYRO_CONFIG_DEBUG"
 		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
+		kind "WindowedApp"
 		defines "PYRO_CONFIG_RELEASE"
 		runtime "Release"
 		optimize "On"
