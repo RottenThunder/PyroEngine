@@ -10,7 +10,7 @@ namespace PyroEngine
 		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
-			PYRO_ASSERT(false, "A Texture is about to be created with no Graphics API");
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_9_DESC, PYRO_ERROR_9);
 			return nullptr;
 		case OpenGL:
 			return new OpenGLTexture(filePath);
@@ -18,7 +18,7 @@ namespace PyroEngine
 			break;
 		}
 
-		PYRO_ASSERT(false, "A Texture is about to be created with an unknown Graphics API");
+		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_10_DESC, PYRO_ERROR_10);
 		return nullptr;
 	}
 
@@ -27,7 +27,7 @@ namespace PyroEngine
 		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
-			PYRO_ASSERT(false, "A Texture is about to be created with no Graphics API");
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_9_DESC, PYRO_ERROR_9);
 			return nullptr;
 		case OpenGL:
 			return new OpenGLTexture(width, height);
@@ -35,7 +35,7 @@ namespace PyroEngine
 			break;
 		}
 
-		PYRO_ASSERT(false, "A Texture is about to be created with an unknown Graphics API");
+		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_10_DESC, PYRO_ERROR_10);
 		return nullptr;
 	}
 }

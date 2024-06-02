@@ -17,7 +17,7 @@ namespace PyroEngine
 		glDeleteProgram(RendererID);
 	}
 
-	void OpenGLShader::Compile(const std::unordered_map<uint32_t, std::string>& shaderSources)
+	PYRO_TYPE_ERROR OpenGLShader::Compile(const std::unordered_map<uint32_t, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
 		std::vector<GLenum> glShaderIDs;
@@ -41,13 +41,16 @@ namespace PyroEngine
 				GLint maxLength = 0;
 				glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
 
-				std::vector<GLchar> infoLog(maxLength);
+				std::string infoLog(maxLength, '\0');
 				glGetShaderInfoLog(shader, maxLength, &maxLength, &infoLog[0]);
 
-				glDeleteShader(shader);
+				glDeleteProgram(program);
 
-				PYRO_ASSERT(false, "Failed to Compile Shader! " << infoLog.data());
-				break;
+				for (auto id : glShaderIDs)
+					glDeleteShader(id);
+
+				PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_16_DESC, PYRO_ERROR_16, infoLog);
+				return PYRO_ERROR_16;
 			}
 
 			glAttachShader(program, shader);
@@ -63,7 +66,7 @@ namespace PyroEngine
 			GLint maxLength = 0;
 			glGetProgramiv(program, GL_INFO_LOG_LENGTH, &maxLength);
 
-			std::vector<GLchar> infoLog(maxLength);
+			std::string infoLog(maxLength, '\0');
 			glGetProgramInfoLog(program, maxLength, &maxLength, &infoLog[0]);
 
 			glDeleteProgram(program);
@@ -71,13 +74,14 @@ namespace PyroEngine
 			for (auto id : glShaderIDs)
 				glDeleteShader(id);
 
-			PYRO_ASSERT(false, "Failed to Link Shaders! " << infoLog.data());
-			return;
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_17_DESC, PYRO_ERROR_17, infoLog);
+			return PYRO_ERROR_17;
 		}
 
 		for (auto id : glShaderIDs)
 			glDetachShader(program, id);
 
 		RendererID = program;
+		return PYRO_ERROR_NO_ERROR;
 	}
 }

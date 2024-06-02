@@ -11,7 +11,8 @@ namespace PyroEngine
 		static bool m_Running;
 		static std::vector<Application*> m_Applications;
 	public:
-		static void Init();
+		static PYRO_TYPE_ERROR Init();
+		static PYRO_TYPE_ERROR InitWithoutLogger();
 		static void Terminate();
 
 		static void AddApplication(Application* app);

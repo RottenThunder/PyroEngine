@@ -77,7 +77,11 @@ namespace PyroEngine
 
 	float& SIMDRegister128::operator[](size_t index)
 	{
-		PYRO_ASSERT(index < 4, "A value was trying to be accessed with an index of greater than 3 in a SIMDRegister128");
+		if (index >= 4)
+		{
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_2_DESC, PYRO_ERROR_2, index);
+			index = 0;
+		}
 
 #if defined PYRO_PLATFORM_WINDOWS
 		return m_Register.m128_f32[index];

@@ -10,7 +10,7 @@ namespace PyroEngine
 		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
-			PYRO_ASSERT(false, "An Index Buffer is about to be created with no Graphics API");
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_5_DESC, PYRO_ERROR_5);
 			return nullptr;
 		case OpenGL:
 			return new OpenGLIndexBuffer(indices, count);
@@ -18,7 +18,7 @@ namespace PyroEngine
 			break;
 		}
 
-		PYRO_ASSERT(false, "An Index Buffer is about to be created with an unknown Graphics API");
+		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_6_DESC, PYRO_ERROR_6);
 		return nullptr;
 	}
 }

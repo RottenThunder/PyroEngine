@@ -10,7 +10,7 @@ namespace PyroEngine
 		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
-			PYRO_ASSERT(false, "A Vertex Buffer is about to be created with no Graphics API");
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_13_DESC, PYRO_ERROR_13);
 			return nullptr;
 		case OpenGL:
 			return new OpenGLVertexBuffer(vertices, size);
@@ -18,7 +18,7 @@ namespace PyroEngine
 			break;
 		}
 
-		PYRO_ASSERT(false, "A Vertex Buffer is about to be created with an unknown Graphics API");
+		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_14_DESC, PYRO_ERROR_14);
 		return nullptr;
 	}
 }

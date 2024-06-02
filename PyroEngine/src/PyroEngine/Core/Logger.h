@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 #include <fstream>
 #include <filesystem>
 
@@ -9,6 +10,7 @@ namespace PyroEngine
 	class Logger
 	{
 	private:
+		static bool s_LoggerInitialised;
 		static std::fstream s_LoggerStream;
 		static std::filesystem::path s_LoggerFilePath;
 		static size_t s_LoggerFilesPrinted;
@@ -17,81 +19,6 @@ namespace PyroEngine
 
 		template<typename T>
 		static std::string DecodeLogArgument(T type);
-
-		template<>
-		static std::string DecodeLogArgument<bool>(bool type);
-
-		template<>
-		static std::string DecodeLogArgument<char>(char type);
-
-		template<>
-		static std::string DecodeLogArgument<short>(short type);
-
-		template<>
-		static std::string DecodeLogArgument<int>(int type);
-
-		template<>
-		static std::string DecodeLogArgument<long long>(long long type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned char>(unsigned char type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned short>(unsigned short type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned int>(unsigned int type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned long long>(unsigned long long type);
-
-		template<>
-		static std::string DecodeLogArgument<float>(float type);
-
-		template<>
-		static std::string DecodeLogArgument<double>(double type);
-
-		template<>
-		static std::string DecodeLogArgument<void*>(void* type);
-
-		template<>
-		static std::string DecodeLogArgument<bool*>(bool* type);
-
-		template<>
-		static std::string DecodeLogArgument<char*>(char* type);
-
-		template<>
-		static std::string DecodeLogArgument<short*>(short* type);
-
-		template<>
-		static std::string DecodeLogArgument<int*>(int* type);
-
-		template<>
-		static std::string DecodeLogArgument<long long*>(long long* type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned char*>(unsigned char* type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned short*>(unsigned short* type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned int*>(unsigned int* type);
-
-		template<>
-		static std::string DecodeLogArgument<unsigned long long*>(unsigned long long* type);
-
-		template<>
-		static std::string DecodeLogArgument<float*>(float* type);
-
-		template<>
-		static std::string DecodeLogArgument<double*>(double* type);
-
-		template<>
-		static std::string DecodeLogArgument<const char*>(const char* type);
-
-		template<>
-		static std::string DecodeLogArgument<std::string>(std::string type);
 
 		static void DecodeAndAppendLogArgument(std::vector<std::string>& strings);
 
@@ -186,73 +113,97 @@ namespace PyroEngine
 	template<>
 	inline std::string Logger::DecodeLogArgument(void* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(bool* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(char* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(short* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(int* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(long long* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(unsigned char* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(unsigned short* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(unsigned int* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(unsigned long long* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(float* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
 	inline std::string Logger::DecodeLogArgument(double* type)
 	{
-		return std::format("{:#018x}", (unsigned long long)type);
+		std::stringstream stream;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		return stream.str();
 	}
 
 	template<>
@@ -285,6 +236,9 @@ namespace PyroEngine
 	inline std::string Logger::Log(PYRO_LOG_TYPE_CHANNEL logChannel, const std::string& msg, Args ...args)
 	{
 		std::string output;
+
+		if (s_LoggerInitialised == false)
+			return output;
 
 		if (logChannel < s_MinLogChannel)
 			return output;

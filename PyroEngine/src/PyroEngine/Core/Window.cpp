@@ -13,12 +13,28 @@ namespace PyroEngine
 		m_Properties.m_Height = height;
 
 		m_Window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
-		PYRO_ASSERT(m_Window, "Window Creation was unsuccessful");
+		if (m_Window == NULL)
+		{
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_3_DESC, PYRO_ERROR_3);
+			m_Properties.m_Name.clear();
+			m_Properties.m_Width = 0;
+			m_Properties.m_Height = 0;
+			return;
+		}
 
 		glfwMakeContextCurrent(m_Window);
 
 		int gladInit = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		PYRO_ASSERT(gladInit == GLFW_TRUE, "Glad did not initialise");
+		if (gladInit != GLFW_TRUE)
+		{
+			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_4_DESC, PYRO_ERROR_4);
+			glfwDestroyWindow(m_Window);
+			m_Window = nullptr;
+			m_Properties.m_Name.clear();
+			m_Properties.m_Width = 0;
+			m_Properties.m_Height = 0;
+			return;
+		}
 
 		glfwSetWindowUserPointer(m_Window, &m_Properties);
 		glfwGetWindowPos(m_Window, &m_Properties.m_PosX, &m_Properties.m_PosY);

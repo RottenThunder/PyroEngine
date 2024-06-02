@@ -106,7 +106,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	PSTR lpCmdLine, int nCmdShow)
 {
 	PyroEngine::GlobalSettings::s_GraphicsAPI = PyroEngine::GraphicsAPI::OpenGL;
-	PyroEngine::Engine::Init();
+	PYRO_TYPE_ERROR successfulInit = PyroEngine::Engine::Init();
+	if (successfulInit != PYRO_ERROR_NO_ERROR)
+		return 0;
 	MainApplication* mainApp = new MainApplication();
 	PyroEngine::Engine::AddApplication(mainApp);
 	PyroEngine::Engine::Run();
@@ -120,7 +122,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 int main(int argc, char** argv)
 {
 	PyroEngine::GlobalSettings::s_GraphicsAPI = PyroEngine::GraphicsAPI::OpenGL;
-	PyroEngine::Engine::Init();
+	PYRO_TYPE_ERROR successfulInit = PyroEngine::Engine::Init();
+	if (successfulInit != PYRO_ERROR_NO_ERROR)
+		return 0;
 	MainApplication* mainApp = new MainApplication();
 	PyroEngine::Engine::AddApplication(mainApp);
 	PyroEngine::Engine::Run();
