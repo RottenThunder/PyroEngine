@@ -18,9 +18,7 @@
 //-------------------------------------------------------------------------
 
 //---MATHS-----------------------------------------------------------------
-#include "PyroEngine/Maths/Vectors/Vector2.h"
-#include "PyroEngine/Maths/Vectors/Vector3.h"
-#include "PyroEngine/Maths/Vectors/Vector4.h"
+#include "PyroEngine/Maths/Vector.h"
 //-------------------------------------------------------------------------
 
 //---RENDERER--------------------------------------------------------------
