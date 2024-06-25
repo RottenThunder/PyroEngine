@@ -1,6 +1,6 @@
 #include <PyroEngine.h>
 
-class MainApplication : public PyroEngine::WindowApplication
+class MainProgram : public PyroEngine::Program
 {
 private:
 	PyroEngine::VertexArray* m_VertexArray = nullptr;
@@ -9,10 +9,10 @@ private:
 	PyroEngine::Shader* m_Shader = nullptr;
 	PyroEngine::Texture* m_Texture = nullptr;
 public:
-	MainApplication()
-		: WindowApplication() {}
+	MainProgram()
+		: Program() {}
 
-	virtual void OnWindowAttach() override
+	virtual void OnProgramAttach() override
 	{
 		m_VertexArray = PyroEngine::VertexArray::Create();
 
@@ -80,7 +80,7 @@ public:
 		p_Texture = m_Texture;
 	}
 
-	virtual void OnWindowDetach() override
+	virtual void OnProgramDetach() override
 	{
 		delete m_VertexArray;
 		delete m_VertexBuffer;
@@ -89,11 +89,11 @@ public:
 		delete m_Texture;
 	}
 
-	virtual void OnWindowUpdate() override
+	virtual void OnProgramUpdate() override
 	{
 	}
 
-	virtual void OnWindowEvent(PyroEngine::Event& e) override
+	virtual void OnProgramEvent(PyroEngine::Event& e) override
 	{
 	}
 };
@@ -104,11 +104,11 @@ int main(int argc, char** argv)
 	PYRO_TYPE_ERROR successfulInit = PyroEngine::Engine::Init();
 	if (successfulInit != PYRO_ERROR_NO_ERROR)
 		return 0;
-	MainApplication* mainApp = new MainApplication();
-	PyroEngine::Engine::AddApplication(mainApp);
+	MainProgram* mainProgram = new MainProgram();
+	PyroEngine::Engine::AddProgram(mainProgram);
 	PyroEngine::Engine::Run();
 	PyroEngine::Engine::Terminate();
-	delete mainApp;
+	delete mainProgram;
 	return 0;
 }
 

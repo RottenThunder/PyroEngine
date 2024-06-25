@@ -1,28 +1,28 @@
 #include "PyroEnginePCH.h"
-#include "WindowApplication.h"
+#include "Program.h"
 #include "glad/glad.h"
 
 namespace PyroEngine
 {
-	void WindowApplication::OnAttach()
+	void Program::OnEngineAttach()
 	{
-		m_Window.SetEventCallback(PYRO_BIND_EVENT_FUNCTION(WindowApplication::OnEvent));
+		p_Window.SetEventCallback(PYRO_BIND_EVENT_FUNCTION(Program::OnEngineEvent));
 
-		OnWindowAttach();
+		OnProgramAttach();
 
 		glUseProgram(((OpenGLShader*)p_Shader)->GetRendererID());
 		GLint location = glGetUniformLocation(((OpenGLShader*)p_Shader)->GetRendererID(), "u_Texture");
 		glUniform1i(location, 0);
 	}
 
-	void WindowApplication::OnDetach()
+	void Program::OnEngineDetach()
 	{
-		OnWindowDetach();
+		OnProgramDetach();
 	}
 
-	void WindowApplication::OnUpdate()
+	void Program::OnEngineUpdate()
 	{
-		OnWindowUpdate();
+		OnProgramUpdate();
 
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -33,30 +33,30 @@ namespace PyroEngine
 		glBindVertexArray(((OpenGLVertexArray*)p_VertexArray)->GetRendererID());
 		glDrawElements(GL_TRIANGLES, p_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 
-		m_Window.OnUpdate();
+		p_Window.OnUpdate();
 	}
 
-	void WindowApplication::OnEvent(Event& e)
+	void Program::OnEngineEvent(Event& e)
 	{
-		OnWindowEvent(e);
+		OnProgramEvent(e);
 
 		if (e.GetEventType() == PyroEngine::EventType::WindowClosed)
 			Engine::StopRunning();
 	}
 
-	void WindowApplication::OnWindowAttach()
+	void Program::OnProgramAttach()
 	{
 	}
 
-	void WindowApplication::OnWindowDetach()
+	void Program::OnProgramDetach()
 	{
 	}
 
-	void WindowApplication::OnWindowUpdate()
+	void Program::OnProgramUpdate()
 	{
 	}
 
-	void WindowApplication::OnWindowEvent(Event& e)
+	void Program::OnProgramEvent(Event& e)
 	{
 	}
 }

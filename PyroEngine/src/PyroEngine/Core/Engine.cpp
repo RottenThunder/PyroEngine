@@ -9,7 +9,7 @@
 namespace PyroEngine
 {
 	bool Engine::m_Running = true;
-	std::vector<Application*> Engine::m_Applications;
+	std::vector<Program*> Engine::m_Programs;
 
 	PYRO_TYPE_ERROR Engine::Init()
 	{
@@ -45,29 +45,29 @@ namespace PyroEngine
 
 	void Engine::Terminate()
 	{
-		for (Application* app : m_Applications)
-			app->OnDetach();
+		for (Program* program : m_Programs)
+			program->OnEngineDetach();
 
-		m_Applications.clear();
+		m_Programs.clear();
 
 		glfwTerminate();
 
 		Logger::Terminate();
 	}
 
-	void Engine::AddApplication(Application* app)
+	void Engine::AddProgram(Program* program)
 	{
-		m_Applications.push_back(app);
-		app->OnAttach();
+		m_Programs.push_back(program);
+		program->OnEngineAttach();
 	}
 
-	void Engine::RemoveApplication(Application* app)
+	void Engine::RemoveProgram(Program* program)
 	{
-		auto it = std::find(m_Applications.begin(), m_Applications.end(), app);
-		if (it != m_Applications.end())
+		auto it = std::find(m_Programs.begin(), m_Programs.end(), program);
+		if (it != m_Programs.end())
 		{
-			app->OnDetach();
-			m_Applications.erase(it);
+			program->OnEngineDetach();
+			m_Programs.erase(it);
 		}
 	}
 
@@ -75,9 +75,9 @@ namespace PyroEngine
 	{
 		while (m_Running)
 		{
-			for (Application* app : m_Applications)
+			for (Program* program : m_Programs)
 			{
-				app->OnUpdate();
+				program->OnEngineUpdate();
 			}
 		}
 	}
