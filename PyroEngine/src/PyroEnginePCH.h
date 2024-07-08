@@ -4,6 +4,8 @@
 
 //---UTILITY---------------------------------------------------------------
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
 #include <functional>
 #include <immintrin.h>
 #include <iostream>
