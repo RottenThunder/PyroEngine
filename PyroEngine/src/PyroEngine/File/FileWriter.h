@@ -22,18 +22,18 @@ namespace PyroEngine
 		//Returns the absolute path of the currently open file. If no file is open, then it will return the current working directory
 		std::filesystem::path GetFilePath() const;
 		//Returns whether or not every write operation will append to the end of the file. If no file is open, then it will return false always
-		bool GetIsAlwaysAppending() const;
+		bool GetIsAlwaysAppending() const noexcept;
 
 		//Opens a file on the host system. If a file is already currently open then it will close that file before attempting to open the new one. The writing indicator will be set at the very beginning of the file so that the next written byte is at the very start of the file. An optional flag can be given to specify that every write operation to the new file will append to the end of the file no matter what. This function can not open files that are greater in size than the PYRO_FILE_WRITER_FILE_LIMIT macro except if you are opening the file to append always. Returns whether or not the file has been successfully opened
 		bool Open(const std::filesystem::path& path, bool alwaysAppend = false);
 		//Closes the currently open file. If no file is open, then this function will not do anything
 		void Close();
 		//Returns whether or not a file is currently open
-		bool IsOpen() const;
+		bool IsOpen() const noexcept;
 
-		//Sets the position of the indicator such that the next written byte is from that position. Has no effect if the currently open file is being appended to always
-		void SeekPosition(size_t pos);
-		//Retrieves the current position of the indicator within the currently open file. If no file is open then it will return ???
+		//Sets the position of the indicator such that the next written byte is from that position. Has no effect if the currently open file is being appended to always. Returns whether it was successful
+		bool SeekPosition(size_t pos);
+		//Retrieves the current position of the indicator within the currently open file. If no file is open then it will return 0
 		size_t GetPosition();
 
 		//Sets the position of the indicator such that the next written byte is at the very start of the currently open file

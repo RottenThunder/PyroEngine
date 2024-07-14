@@ -18,7 +18,7 @@ namespace PyroEngine
 		return m_FilePath;
 	}
 
-	bool FileWriter::GetIsAlwaysAppending() const
+	bool FileWriter::GetIsAlwaysAppending() const noexcept
 	{
 		return m_IsAlwaysAppending;
 	}
@@ -115,19 +115,37 @@ namespace PyroEngine
 		m_IsAlwaysAppending = false;
 	}
 
-	bool FileWriter::IsOpen() const
+	bool FileWriter::IsOpen() const noexcept
 	{
 		return m_FileStream.is_open();
 	}
 
-	void FileWriter::SeekPosition(size_t pos)
+	bool FileWriter::SeekPosition(size_t pos)
 	{
-		m_FileStream.seekp(pos, std::ios::beg);
+		bool success = true;
+		try
+		{
+			m_FileStream.seekp(pos, std::ios::beg);
+		}
+		catch (std::exception& e)
+		{
+			success = false;
+		}
+		return success;
 	}
 
 	size_t FileWriter::GetPosition()
 	{
-		return m_FileStream.tellp();
+		size_t output;
+		try
+		{
+			output = m_FileStream.tellp();
+		}
+		catch (std::exception& e)
+		{
+			output = 0;
+		}
+		return output;
 	}
 
 	void FileWriter::GoToStart()
