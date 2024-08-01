@@ -17,7 +17,7 @@ project "PyroEngine"
 	location "PyroEngine"
 	kind "StaticLib"
 	language "C++"
-	cppdialect "C++20"
+	cppdialect "C++latest"
 	staticruntime "On"
 
 	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
@@ -91,7 +91,7 @@ project "PyroEngine"
 project "PyroEditor"
 	location "PyroEditor"
 	language "C++"
-	cppdialect "C++20"
+	cppdialect "C++latest"
 	staticruntime "On"
 
 	targetdir ("Bin/%{cfg.buildcfg}-%{cfg.system}/%{prj.name}")
