@@ -101,9 +101,7 @@ public:
 int main(int argc, char** argv)
 {
 	PyroEngine::GlobalSettings::s_GraphicsAPI = PyroEngine::GraphicsAPI::OpenGL;
-	PYRO_TYPE_ERROR successfulInit = PyroEngine::Engine::Init();
-	if (successfulInit != PYRO_ERROR_NO_ERROR)
-		return 0;
+	PyroEngine::Engine::Init();
 	MainProgram* mainProgram = new MainProgram();
 	PyroEngine::Engine::AddProgram(mainProgram);
 	PyroEngine::Engine::Run();

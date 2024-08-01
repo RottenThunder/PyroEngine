@@ -1,5 +1,6 @@
 #pragma once
-#include <stdint.h>
+#include <filesystem>
+#include <fstream>
 
 namespace PyroEngine
 {

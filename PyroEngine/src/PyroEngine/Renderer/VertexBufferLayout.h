@@ -56,7 +56,7 @@ namespace PyroEngine
 			return sizeof(double) * 4 * 4;
 		}
 
-		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_15_DESC, PYRO_ERROR_15);
+		Logger::Log(LoggerChannel::Error, "An Unknown ShaderDataType has been requested to process");
 		return 0;
 	}
 
@@ -117,7 +117,7 @@ namespace PyroEngine
 				return 4 * 4;
 			}
 
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_15_DESC, PYRO_ERROR_15);
+			Logger::Log(LoggerChannel::Error, "An Unknown ShaderDataType has been requested to process");
 			return 0;
 		}
 	};

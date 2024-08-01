@@ -13,7 +13,7 @@ namespace PyroEngine
 		OpenGLVertexArray();
 		virtual ~OpenGLVertexArray();
 
-		virtual PYRO_TYPE_ERROR AddVertexBuffer(VertexBuffer* vertexBuffer) override;
+		virtual void AddVertexBuffer(VertexBuffer* vertexBuffer) override;
 		virtual void SetIndexBuffer(IndexBuffer* indexBuffer) override;
 
 		virtual std::vector<VertexBuffer*> GetVertexBuffers() const override { return m_VertexBuffers; }

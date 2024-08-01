@@ -48,15 +48,14 @@ namespace PyroEngine
 		glDeleteTextures(1, &m_RendererID);
 	}
 
-	PYRO_TYPE_ERROR OpenGLTexture::SetData(void* data, uint32_t size)
+	void OpenGLTexture::SetData(void* data, uint32_t size)
 	{
 		if (size != m_Width * m_Height * 4)
 		{
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_18_DESC, PYRO_ERROR_18);
-			return PYRO_ERROR_18;
+			Logger::Log(LoggerChannel::Error, "Data sent to a Texture doesn't have the same size as the Texture");
+			return;
 		}
 
 		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, data);
-		return PYRO_ERROR_NO_ERROR;
 	}
 }

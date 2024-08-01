@@ -15,7 +15,7 @@ namespace PyroEngine
 		m_Window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
 		if (m_Window == NULL)
 		{
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_3_DESC, PYRO_ERROR_3);
+			Logger::Log(LoggerChannel::Error, "Window Creation was unsuccessful");
 			m_Properties.m_Name.clear();
 			m_Properties.m_Width = 0;
 			m_Properties.m_Height = 0;
@@ -27,7 +27,7 @@ namespace PyroEngine
 		int gladInit = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		if (gladInit != GLFW_TRUE)
 		{
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_4_DESC, PYRO_ERROR_4);
+			Logger::Log(LoggerChannel::Error, "Glad did not initialise");
 			glfwDestroyWindow(m_Window);
 			m_Window = nullptr;
 			m_Properties.m_Name.clear();

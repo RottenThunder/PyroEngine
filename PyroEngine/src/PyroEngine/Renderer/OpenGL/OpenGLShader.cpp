@@ -17,7 +17,7 @@ namespace PyroEngine
 		glDeleteProgram(RendererID);
 	}
 
-	PYRO_TYPE_ERROR OpenGLShader::Compile(const std::unordered_map<uint32_t, std::string>& shaderSources)
+	void OpenGLShader::Compile(const std::unordered_map<uint32_t, std::string>& shaderSources)
 	{
 		GLuint program = glCreateProgram();
 		std::vector<GLenum> glShaderIDs;
@@ -49,8 +49,8 @@ namespace PyroEngine
 				for (auto id : glShaderIDs)
 					glDeleteShader(id);
 
-				PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_16_DESC, PYRO_ERROR_16, infoLog);
-				return PYRO_ERROR_16;
+				Logger::Log(LoggerChannel::Error, "Failed to Compile Shader: {}", infoLog);
+				return;
 			}
 
 			glAttachShader(program, shader);
@@ -74,14 +74,13 @@ namespace PyroEngine
 			for (auto id : glShaderIDs)
 				glDeleteShader(id);
 
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_17_DESC, PYRO_ERROR_17, infoLog);
-			return PYRO_ERROR_17;
+			Logger::Log(LoggerChannel::Error, "Failed to Link Shaders: {}", infoLog);
+			return;
 		}
 
 		for (auto id : glShaderIDs)
 			glDetachShader(program, id);
 
 		RendererID = program;
-		return PYRO_ERROR_NO_ERROR;
 	}
 }

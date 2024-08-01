@@ -10,7 +10,7 @@ namespace PyroEngine
 		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_7_DESC, PYRO_ERROR_7);
+			Logger::Log(LoggerChannel::Error, "A Shader has been created with no Graphics API");
 			return nullptr;
 		case OpenGL:
 			return new OpenGLShader(vertexSrc, fragmentSrc);
@@ -18,7 +18,7 @@ namespace PyroEngine
 			break;
 		}
 
-		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_8_DESC, PYRO_ERROR_8);
+		Logger::Log(LoggerChannel::Error, "A Shader has been created with an unknown Graphics API");
 		return nullptr;
 	}
 }

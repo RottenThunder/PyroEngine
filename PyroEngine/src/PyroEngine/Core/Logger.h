@@ -1,21 +1,25 @@
 #pragma once
+#include "PyroEngine/File/FileWriter.h"
+#if defined PYRO_CONFIG_DEBUG
 #include <iostream>
-#include <fstream>
-#include <filesystem>
-
-#define PYRO_LOG_TYPE_CHANNEL unsigned char
+#endif
 
 namespace PyroEngine
 {
+	enum LoggerChannel
+	{
+		None = 0,
+		Trace,
+		Info,
+		Warning,
+		Error
+	};
+
 	class Logger
 	{
 	private:
-		static bool s_LoggerInitialised;
-		static std::fstream s_LoggerStream;
-		static std::filesystem::path s_LoggerFilePath;
-		static size_t s_LoggerFilesPrinted;
-		static size_t s_MaxLogFileSize;
-		static PYRO_LOG_TYPE_CHANNEL s_MinLogChannel;
+		static FileWriter s_LogFile;
+		static void (*s_LoggerFunctionCallback)(LoggerChannel, const std::string&);
 
 		template<typename T>
 		static std::string DecodeLogArgument(T type);
@@ -28,14 +32,15 @@ namespace PyroEngine
 		template<typename T, typename... Args>
 		static void DecodeAndAppendLogArgument(std::vector<std::string>& strings, T firstArg, Args... args);
 	public:
-		static void Init();
-		static void Terminate();
+		static bool TurnOnFileLogging();
+		static void TurnOffFileLogging();
+		static bool GetFileLoggingStatus();
 
-		static void SetMaximumLogFileSize(size_t fileSize);
-		static void SetMinimumLogChannel(PYRO_LOG_TYPE_CHANNEL minLogChannel);
+		static void SetLoggerCallback(void (*callback)(LoggerChannel, const std::string&));
+		static void (*GetLoggerCallback())(LoggerChannel, const std::string&);
 
 		template<typename... Args>
-		static std::string Log(PYRO_LOG_TYPE_CHANNEL logChannel, const std::string& msg, Args... args);
+		static std::string Log(LoggerChannel channel, const std::string& msg, Args... args);
 	};
 
 	template<typename T>
@@ -51,49 +56,49 @@ namespace PyroEngine
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(char type)
+	inline std::string Logger::DecodeLogArgument(int8_t type)
 	{
 		return std::string(1, type);
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(short type)
+	inline std::string Logger::DecodeLogArgument(int16_t type)
 	{
-		return std::to_string((int)type);
+		return std::to_string((int32_t)type);
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(int type)
-	{
-		return std::to_string(type);
-	}
-
-	template<>
-	inline std::string Logger::DecodeLogArgument(long long type)
+	inline std::string Logger::DecodeLogArgument(int32_t type)
 	{
 		return std::to_string(type);
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned char type)
-	{
-		return std::to_string((unsigned int)type);
-	}
-
-	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned short type)
-	{
-		return std::to_string((unsigned int)type);
-	}
-
-	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned int type)
+	inline std::string Logger::DecodeLogArgument(int64_t type)
 	{
 		return std::to_string(type);
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned long long type)
+	inline std::string Logger::DecodeLogArgument(uint8_t type)
+	{
+		return std::to_string((uint32_t)type);
+	}
+
+	template<>
+	inline std::string Logger::DecodeLogArgument(uint16_t type)
+	{
+		return std::to_string((uint32_t)type);
+	}
+
+	template<>
+	inline std::string Logger::DecodeLogArgument(uint32_t type)
+	{
+		return std::to_string(type);
+	}
+
+	template<>
+	inline std::string Logger::DecodeLogArgument(uint64_t type)
 	{
 		return std::to_string(type);
 	}
@@ -114,7 +119,7 @@ namespace PyroEngine
 	inline std::string Logger::DecodeLogArgument(void* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
@@ -122,71 +127,71 @@ namespace PyroEngine
 	inline std::string Logger::DecodeLogArgument(bool* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(char* type)
+	inline std::string Logger::DecodeLogArgument(int8_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(short* type)
+	inline std::string Logger::DecodeLogArgument(int16_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(int* type)
+	inline std::string Logger::DecodeLogArgument(int32_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(long long* type)
+	inline std::string Logger::DecodeLogArgument(int64_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned char* type)
+	inline std::string Logger::DecodeLogArgument(uint8_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned short* type)
+	inline std::string Logger::DecodeLogArgument(uint16_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned int* type)
+	inline std::string Logger::DecodeLogArgument(uint32_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
 	template<>
-	inline std::string Logger::DecodeLogArgument(unsigned long long* type)
+	inline std::string Logger::DecodeLogArgument(uint64_t* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
@@ -194,7 +199,7 @@ namespace PyroEngine
 	inline std::string Logger::DecodeLogArgument(float* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
@@ -202,7 +207,7 @@ namespace PyroEngine
 	inline std::string Logger::DecodeLogArgument(double* type)
 	{
 		std::stringstream stream;
-		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (unsigned long long)type;
+		stream << "0x" << std::setfill('0') << std::setw(16) << std::hex << (uint64_t)type;
 		return stream.str();
 	}
 
@@ -233,80 +238,77 @@ namespace PyroEngine
 	}
 
 	template<typename ...Args>
-	inline std::string Logger::Log(PYRO_LOG_TYPE_CHANNEL logChannel, const std::string& msg, Args ...args)
+	inline std::string Logger::Log(LoggerChannel channel, const std::string& msg, Args ...args)
 	{
-		std::string output;
-
-		if (s_LoggerInitialised == false)
-			return output;
-
-		if (logChannel < s_MinLogChannel)
-			return output;
-
-		output = msg;
+		std::string output = msg;
 
 		std::vector<std::string> argStrings;
 		DecodeAndAppendLogArgument(argStrings, args...);
 
 		for (size_t i = 0; i < argStrings.size(); i++)
 		{
-			std::string eraseString = "{" + std::to_string(i) + "}";
-			size_t eraseIndex = output.find(eraseString);
+			size_t eraseIndex = output.find("{}");
 			if (eraseIndex != std::string::npos)
 			{
-				output.erase(eraseIndex, eraseString.size());
+				output.erase(eraseIndex, sizeof("{}") - 1);
 				output.insert(eraseIndex, argStrings[i]);
 			}
 			else
 				i = argStrings.size();
 		}
 
-		size_t fileSize = std::filesystem::file_size(s_LoggerFilePath);
-		if (fileSize + output.size() < s_MaxLogFileSize)
-		{
-			s_LoggerStream.write(output.c_str(), output.size());
-			s_LoggerStream.write("\n", 1);
-		}
-		else if (fileSize + output.size() == s_MaxLogFileSize)
-		{
-			s_LoggerStream.write(output.c_str(), output.size());
-		}
-		else
-		{
-			s_LoggerStream.close();
-
-			s_LoggerFilesPrinted++;
-			s_LoggerFilePath = "Logs/Log" + std::to_string(s_LoggerFilesPrinted) + ".txt";
-			s_LoggerStream.open(s_LoggerFilePath, std::ios::out | std::ios::binary);
-
-			s_LoggerStream.write(output.c_str(), output.size());
-			s_LoggerStream.write("\n", 1);
-		}
-
-		
-
 #if defined PYRO_CONFIG_DEBUG
-		std::cout << output << "\n";
+		switch (channel)
+		{
+		case LoggerChannel::None:
+			std::cout << output << "\n";
+			break;
+		case LoggerChannel::Trace:
+			std::cout << "[TRACE] " + output << "\n";
+			break;
+		case LoggerChannel::Info:
+			std::cout << "[INFO] " + output << "\n";
+			break;
+		case LoggerChannel::Warning:
+			std::cout << "[WARNING] " + output << "\n";
+			break;
+		case LoggerChannel::Error:
+			std::cout << "[ERROR] " + output << "\n";
+			break;
+		default:
+			std::cout << output << "\n";
+			break;
+		}
 #endif
+
+		if (s_LogFile.IsOpen())
+		{
+			switch (channel)
+			{
+			case LoggerChannel::None:
+				s_LogFile.WriteString(output + "\n");
+				break;
+			case LoggerChannel::Trace:
+				s_LogFile.WriteString("[TRACE] " + output + "\n");
+				break;
+			case LoggerChannel::Info:
+				s_LogFile.WriteString("[INFO] " + output + "\n");
+				break;
+			case LoggerChannel::Warning:
+				s_LogFile.WriteString("[WARNING] " + output + "\n");
+				break;
+			case LoggerChannel::Error:
+				s_LogFile.WriteString("[ERROR] " + output + "\n");
+				break;
+			default:
+				s_LogFile.WriteString(output + "\n");
+				break;
+			}
+		}
+
+		if (s_LoggerFunctionCallback != nullptr)
+			s_LoggerFunctionCallback(channel, output);
 
 		return output;
 	}
 }
-
-#define PYRO_LOG_CHANNEL_TRACE (PYRO_LOG_TYPE_CHANNEL)0
-#define PYRO_LOG_CHANNEL_INFO (PYRO_LOG_TYPE_CHANNEL)100
-#define PYRO_LOG_CHANNEL_WARNING (PYRO_LOG_TYPE_CHANNEL)200
-#define PYRO_LOG_CHANNEL_ERROR (PYRO_LOG_TYPE_CHANNEL)255
-
-#define PYRO_LOG_SET_FILE_SIZE(x) PyroEngine::Logger::SetMaximumLogFileSize(x)
-#define PYRO_LOG_SET_CHANNEL_BASE(x) PyroEngine::Logger::SetMinimumLogChannel(x)
-
-#define PYRO_LOG_TRACE(msg) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_TRACE, (std::string)"[TRACE] " + msg)
-#define PYRO_LOG_INFO(msg) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_INFO, (std::string)"[INFO] " + msg)
-#define PYRO_LOG_WARNING(msg) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_WARNING, (std::string)"[WARNING] " + msg)
-#define PYRO_LOG_ERROR(msg) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_ERROR, (std::string)"[ERROR] " + msg)
-
-#define PYRO_LOG_ARGS_TRACE(msg, ...) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_TRACE, (std::string)"[TRACE] " + msg, __VA_ARGS__)
-#define PYRO_LOG_ARGS_INFO(msg, ...) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_INFO, (std::string)"[INFO] " + msg, __VA_ARGS__)
-#define PYRO_LOG_ARGS_WARNING(msg, ...) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_WARNING, (std::string)"[WARNING] " + msg, __VA_ARGS__)
-#define PYRO_LOG_ARGS_ERROR(msg, ...) PyroEngine::Logger::Log(PYRO_LOG_CHANNEL_ERROR, (std::string)"[ERROR] " + msg, __VA_ARGS__)

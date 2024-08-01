@@ -50,7 +50,7 @@ namespace PyroEngine
 			return GL_DOUBLE;
 		}
 
-		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_15_DESC, PYRO_ERROR_15);
+		Logger::Log(LoggerChannel::Error, "An Unknown ShaderDataType has been requested to process");
 		return 0;
 	}
 
@@ -64,12 +64,12 @@ namespace PyroEngine
 		glDeleteVertexArrays(1, &m_RendererID);
 	}
 
-	PYRO_TYPE_ERROR OpenGLVertexArray::AddVertexBuffer(VertexBuffer* vertexBuffer)
+	void OpenGLVertexArray::AddVertexBuffer(VertexBuffer* vertexBuffer)
 	{
 		if (vertexBuffer->GetLayout().GetElements().size() == 0)
 		{
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_19_DESC, PYRO_ERROR_19);
-			return PYRO_ERROR_19;
+			Logger::Log(LoggerChannel::Error, "A Vertex Buffer has been sent to a Vertex Array with no layout");
+			return;
 		}
 
 		glBindVertexArray(m_RendererID);
@@ -84,7 +84,6 @@ namespace PyroEngine
 		}
 
 		m_VertexBuffers.push_back(vertexBuffer);
-		return PYRO_ERROR_NO_ERROR;
 	}
 
 	void OpenGLVertexArray::SetIndexBuffer(IndexBuffer* indexBuffer)

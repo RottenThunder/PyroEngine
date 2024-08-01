@@ -10,7 +10,7 @@ namespace PyroEngine
 		switch (GlobalSettings::s_GraphicsAPI)
 		{
 		case GraphicsAPINone:
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_11_DESC, PYRO_ERROR_11);
+			Logger::Log(LoggerChannel::Error, "A Vertex Array has been created with no Graphics API");
 			return nullptr;
 		case OpenGL:
 			return new OpenGLVertexArray();
@@ -18,7 +18,7 @@ namespace PyroEngine
 			break;
 		}
 
-		PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_12_DESC, PYRO_ERROR_12);
+		Logger::Log(LoggerChannel::Error, "A Vertex Array has been created with an unknown Graphics API");
 		return nullptr;
 	}
 }

@@ -1,5 +1,6 @@
 #pragma once
-#include <stdint.h>
+#include <filesystem>
+#include <fstream>
 
 //The limit (in bytes) of which a file can be opened using a FileWriter
 #define PYRO_FILE_WRITER_FILE_LIMIT 104857600

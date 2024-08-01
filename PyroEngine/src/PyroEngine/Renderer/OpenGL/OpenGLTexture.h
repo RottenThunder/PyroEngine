@@ -20,6 +20,6 @@ namespace PyroEngine
 		virtual uint32_t GetHeight() const override { return m_Height; }
 		virtual const std::filesystem::path& GetFilePath() const override { return m_FilePath; }
 
-		virtual PYRO_TYPE_ERROR SetData(void* data, uint32_t size) override;
+		virtual void SetData(void* data, uint32_t size) override;
 	};
 }

@@ -11,36 +11,17 @@ namespace PyroEngine
 	bool Engine::m_Running = true;
 	std::vector<Program*> Engine::m_Programs;
 
-	PYRO_TYPE_ERROR Engine::Init()
+	void Engine::Init()
 	{
-		Logger::Init();
-
 		int init = glfwInit();
 		if (init != GLFW_TRUE)
 		{
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_1_DESC, PYRO_ERROR_1);
-			Logger::Terminate();
-			return PYRO_ERROR_1;
+			Logger::Log(LoggerChannel::Error, "GLFW did not initialise");
+			return;
 		}
 
 		ProcessorAnalyser::Analyse();
-
 		MathF::Init();
-
-		return PYRO_ERROR_NO_ERROR;
-	}
-
-	PYRO_TYPE_ERROR Engine::InitWithoutLogger()
-	{
-		int init = glfwInit();
-		if (init != GLFW_TRUE)
-			return PYRO_ERROR_1;
-
-		ProcessorAnalyser::Analyse();
-
-		MathF::Init();
-
-		return PYRO_ERROR_NO_ERROR;
 	}
 
 	void Engine::Terminate()
@@ -51,8 +32,6 @@ namespace PyroEngine
 		m_Programs.clear();
 
 		glfwTerminate();
-
-		Logger::Terminate();
 	}
 
 	void Engine::AddProgram(Program* program)

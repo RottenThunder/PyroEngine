@@ -7,7 +7,7 @@ namespace PyroEngine
 	{
 	private:
 		uint32_t RendererID;
-		PYRO_TYPE_ERROR Compile(const std::unordered_map<uint32_t, std::string>& shaderSources);
+		void Compile(const std::unordered_map<uint32_t, std::string>& shaderSources);
 	public:
 		OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc);
 		virtual ~OpenGLShader();

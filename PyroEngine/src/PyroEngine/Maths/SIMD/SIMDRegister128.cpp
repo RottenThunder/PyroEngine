@@ -79,7 +79,7 @@ namespace PyroEngine
 	{
 		if (index >= 4)
 		{
-			PYRO_LOG_ARGS_ERROR("[ENGINE] E{0}: " + PYRO_ERROR_2_DESC, PYRO_ERROR_2, index);
+			Logger::Log(LoggerChannel::Error, "A value was trying to be accessed with an index of {} in a SIMDRegister128", index);
 			index = 0;
 		}
 
