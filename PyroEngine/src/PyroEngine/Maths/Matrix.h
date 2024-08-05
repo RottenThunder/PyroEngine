@@ -189,4 +189,28 @@ namespace PyroEngine
 		viewProjection.components[15] = 1.0f;
 		return viewProjection;
 	}
+
+	//Creates an view-projection matrix which is the equivalent of a projection matrix times a view matrix (width and height are the edges of the camera)
+	Matrix4x4 CreateViewProjectionWithWidthAndHeight(float width = 1.0f, float height = 1.0f, float x = 0.0f, float y = 0.0f, float radians = 0.0f)
+	{
+		//[ cos(radians)/width, -sin(radians)/width,  0,  -x / width]
+		//[sin(radians)/height, cos(radians)/height,  0, -y / height]
+		//[                  0,                   0, -1,           1]
+		//[                  0,                   0,  0,           1]
+
+		float sinAngle = std::sin(radians);
+		float cosAngle = std::cos(radians);
+		Matrix4x4 viewProjection;
+		viewProjection.Reset();
+		viewProjection.components[0] = cosAngle / width;
+		viewProjection.components[1] = sinAngle / height;
+		viewProjection.components[4] = -sinAngle / width;
+		viewProjection.components[5] = cosAngle / height;
+		viewProjection.components[10] = -1.0f;
+		viewProjection.components[12] = -x / width;
+		viewProjection.components[13] = -y / height;
+		viewProjection.components[14] = 1.0f;
+		viewProjection.components[15] = 1.0f;
+		return viewProjection;
+	}
 }
