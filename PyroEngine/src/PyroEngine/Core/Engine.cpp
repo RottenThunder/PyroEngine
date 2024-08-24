@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "ProcessorAnalyser.h"
 #include "PyroEngine/Maths/MathF.h"
+#include "PyroEngine/Renderer/Renderer.h"
 #include "Logger.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
@@ -22,6 +23,7 @@ namespace PyroEngine
 
 		ProcessorAnalyser::Analyse();
 		MathF::Init();
+		//Renderer::Init(); //Not here because for opengl you need to do it at window creation
 	}
 
 	void Engine::Terminate()
@@ -30,6 +32,8 @@ namespace PyroEngine
 			program->OnEngineDetach();
 
 		m_Programs.clear();
+
+		Renderer::Terminate();
 
 		glfwTerminate();
 	}

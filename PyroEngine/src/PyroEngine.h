@@ -28,6 +28,7 @@
 
 //---RENDERER--------------------------------------------------------------
 #include "PyroEngine/Renderer/IndexBuffer.h"
+#include "PyroEngine/Renderer/Renderer.h"
 #include "PyroEngine/Renderer/Shader.h"
 #include "PyroEngine/Renderer/Texture.h"
 #include "PyroEngine/Renderer/VertexArray.h"

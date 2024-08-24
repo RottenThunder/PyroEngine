@@ -3,94 +3,48 @@
 class MainProgram : public PyroEngine::Program
 {
 private:
-	PyroEngine::VertexArray* m_VertexArray = nullptr;
-	PyroEngine::VertexBuffer* m_VertexBuffer = nullptr;
-	PyroEngine::IndexBuffer* m_IndexBuffer = nullptr;
-	PyroEngine::Shader* m_Shader = nullptr;
-	PyroEngine::Texture* m_Texture = nullptr;
+	PyroEngine::Camera camera;
+	PyroEngine::Texture* tex1;
+	PyroEngine::Texture* tex2;
 public:
 	MainProgram()
 		: Program() {}
 
 	virtual void OnProgramAttach() override
 	{
-		m_VertexArray = PyroEngine::VertexArray::Create();
-
-		float SquareVertices[4 * 8] =
+		camera.Set({ 0.0f, 0.0f }, 0.0f, 1.0f, 1.0f);
+		tex1 = PyroEngine::Texture::Create(5, 5);
+		tex2 = PyroEngine::Texture::Create(3, 3);
+		uint8_t tex1Colours[5 * 5 * 4];
+		for (size_t i = 0; i < 5 * 5; i++)
 		{
-			-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f,//Bottom-Left
-			0.5f, -0.5f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,//Bottom-Right
-			0.5f, 0.5f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,//Top-Right
-			-0.5f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, //Top-Left
-		};
-
-		m_VertexBuffer = PyroEngine::VertexBuffer::Create(SquareVertices, sizeof(SquareVertices));
-
-		m_VertexBuffer->SetLayout({
-			{ PyroEngine::ShaderDataType::Float2, "i_Position" },
-			{ PyroEngine::ShaderDataType::Float2, "i_TexCoord" },
-			{ PyroEngine::ShaderDataType::Float4, "i_Colour" }
-			});
-
-		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
-
-		uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-		m_IndexBuffer = PyroEngine::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-
-		m_VertexArray->SetIndexBuffer(m_IndexBuffer);
-
-		std::string vertexSrc = R"(
-			#version 330 core
-			layout(location = 0) in vec2 i_Position;
-			layout(location = 1) in vec2 i_TexCoord;
-            layout(location = 2) in vec4 i_Colour;
-			out vec2 v_TexCoord;
-            out vec4 v_Colour;
-			void main()
-			{
-				v_TexCoord = i_TexCoord;
-                v_Colour = i_Colour;
-				gl_Position = vec4(i_Position, 0.0, 1.0);
-			}
-		)";
-
-		std::string fragmentSrc = R"(
-			#version 330 core
-			layout(location = 0) out vec4 Colour;
-			in vec2 v_TexCoord;
-            in vec4 v_Colour;
-			uniform sampler2D u_Texture;
-			void main()
-			{
-				Colour = texture(u_Texture, v_TexCoord) * v_Colour;
-			}
-		)";
-
-		m_Shader = PyroEngine::Shader::Create(vertexSrc, fragmentSrc);
-
-		m_Texture = PyroEngine::Texture::Create(2, 2);
-		uint8_t textureData[16] = { 0xFF, 0x00, 0x00, 0xFF,
-									0x00, 0xFF, 0x00, 0xFF,
-									0x00, 0x00, 0xFF, 0xFF,
-									0xFF, 0xFF, 0x00, 0xFF };
-		m_Texture->SetData(textureData, 16);
-
-		p_VertexArray = m_VertexArray;
-		p_Shader = m_Shader;
-		p_Texture = m_Texture;
+			tex1Colours[(i * 4) + 0] = (uint8_t)i * 10;
+			tex1Colours[(i * 4) + 1] = (uint8_t)i * 5;
+			tex1Colours[(i * 4) + 2] = (uint8_t)i * 8;
+			tex1Colours[(i * 4) + 3] = 0xFF;
+		}
+		uint8_t tex2Colours[3 * 3 * 4];
+		for (size_t i = 0; i < 3 * 3; i++)
+		{
+			tex2Colours[(i * 4) + 0] = (uint8_t)i * 3;
+			tex2Colours[(i * 4) + 1] = (uint8_t)i * 10;
+			tex2Colours[(i * 4) + 2] = (uint8_t)i * 7;
+			tex2Colours[(i * 4) + 3] = 0xFF;
+		}
+		tex1->SetData(tex1Colours, 5 * 5 * 4);
+		tex2->SetData(tex2Colours, 3 * 3 * 4);
 	}
 
 	virtual void OnProgramDetach() override
 	{
-		delete m_VertexArray;
-		delete m_VertexBuffer;
-		delete m_IndexBuffer;
-		delete m_Shader;
-		delete m_Texture;
 	}
 
 	virtual void OnProgramUpdate() override
 	{
+		PyroEngine::Renderer::BeginScene(camera);
+		PyroEngine::Renderer::DrawQuad({ 0.5f, 0.5f }, 0.0f, { 0.25f, 0.25f }, 1.0f, 1.0f, 1.0f, tex1);
+		PyroEngine::Renderer::DrawQuad({ -0.5f, -0.5f }, 0.0f, { 0.25f, 0.25f }, 1.0f, 1.0f, 1.0f, tex2);
+		PyroEngine::Renderer::EndScene();
 	}
 
 	virtual void OnProgramEvent(PyroEngine::Event& e) override

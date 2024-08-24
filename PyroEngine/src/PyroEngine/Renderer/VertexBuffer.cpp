@@ -5,7 +5,7 @@
 
 namespace PyroEngine
 {
-	VertexBuffer* VertexBuffer::Create(float* vertices, uint64_t size)
+	VertexBuffer* VertexBuffer::Create(uint64_t size, float* vertices)
 	{
 		switch (GlobalSettings::s_GraphicsAPI)
 		{
@@ -13,7 +13,7 @@ namespace PyroEngine
 			Logger::Log(LoggerChannel::Error, "A Vertex Buffer has been created with no Graphics API");
 			return nullptr;
 		case OpenGL:
-			return new OpenGLVertexBuffer(vertices, size);
+			return new OpenGLVertexBuffer(size, vertices);
 		default:
 			break;
 		}

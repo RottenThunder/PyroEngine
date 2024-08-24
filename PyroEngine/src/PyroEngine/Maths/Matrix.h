@@ -65,7 +65,7 @@ namespace PyroEngine
 	typedef Matrix<4, 4> Matrix4x4;
 
 	//Creates a translation matrix that can be used for translating a Vector4 by x and y units
-	Matrix4x4 CreateTranslation(float x, float y)
+	static Matrix4x4 CreateTranslation(float x, float y)
 	{
 		//[1, 0, 0, x]
 		//[0, 1, 0, y]
@@ -84,7 +84,7 @@ namespace PyroEngine
 	}
 
 	//Creates a scale matrix that can be used for scaling Vector4s up by a factor of sx and sy
-	Matrix4x4 CreateScale(float sx, float sy)
+	static Matrix4x4 CreateScale(float sx, float sy)
 	{
 		//[sx,  0, 0, 0]
 		//[ 0, sy, 0, 0]
@@ -101,7 +101,7 @@ namespace PyroEngine
 	}
 
 	//Creates a rotation matrix that can be used to rotate Vector4s about the z-axis (the only rotation that is noticable in 2D)
-	Matrix4x4 CreateRotation(float radians)
+	static Matrix4x4 CreateRotation(float radians)
 	{
 		//[cos(radians), -sin(radians), 0, 0]
 		//[sin(radians),  cos(radians), 0, 0]
@@ -122,7 +122,7 @@ namespace PyroEngine
 	}
 
 	//Creates a view matrix which can be used for 2D camera orientation
-	Matrix4x4 CreateView(float x = 0.0f, float y = 0.0f, float radians = 0.0f)
+	static Matrix4x4 CreateView(float x = 0.0f, float y = 0.0f, float radians = 0.0f)
 	{
 		//[cos(radians), -sin(radians),  0, -x]
 		//[sin(radians),  cos(radians),  0, -y]
@@ -146,7 +146,7 @@ namespace PyroEngine
 	}
 
 	//Creates an orthographic projection matrix which will have the world coordinates at the edges of the camera
-	Matrix4x4 CreateProjection(float left = -1.0f, float right = 1.0f, float bottom = -1.0f, float top = 1.0f)
+	static Matrix4x4 CreateProjection(float left = -1.0f, float right = 1.0f, float bottom = -1.0f, float top = 1.0f)
 	{
 		//[2/(right - left),                0,  0, -(right + left)/(right - left)]
 		//[               0, 2/(top - bottom),  0, -(top + bottom)/(top - bottom)]
@@ -165,7 +165,7 @@ namespace PyroEngine
 	}
 
 	//Creates an view-projection matrix which is the equivalent of a projection matrix times a view matrix
-	Matrix4x4 CreateViewProjection(float left = -1.0f, float right = 1.0f, float bottom = -1.0f, float top = 1.0f, float x = 0.0f, float y = 0.0f, float radians = 0.0f)
+	static Matrix4x4 CreateViewProjection(float left = -1.0f, float right = 1.0f, float bottom = -1.0f, float top = 1.0f, float x = 0.0f, float y = 0.0f, float radians = 0.0f)
 	{
 		//[2cos(radians)/(right - left), -2sin(radians)/(right - left),  0, -(2x + right + left)/(right - left)]
 		//[2sin(radians)/(top - bottom),  2cos(radians)/(top - bottom),  0, -(2y + top + bottom)/(top - bottom)]
@@ -191,7 +191,7 @@ namespace PyroEngine
 	}
 
 	//Creates an view-projection matrix which is the equivalent of a projection matrix times a view matrix (width and height are the edges of the camera)
-	Matrix4x4 CreateViewProjectionWithWidthAndHeight(float width = 1.0f, float height = 1.0f, float x = 0.0f, float y = 0.0f, float radians = 0.0f)
+	static Matrix4x4 CreateViewProjectionWithWidthAndHeight(float width = 1.0f, float height = 1.0f, float x = 0.0f, float y = 0.0f, float radians = 0.0f)
 	{
 		//[ cos(radians)/width, -sin(radians)/width,  0,  -x / width]
 		//[sin(radians)/height, cos(radians)/height,  0, -y / height]

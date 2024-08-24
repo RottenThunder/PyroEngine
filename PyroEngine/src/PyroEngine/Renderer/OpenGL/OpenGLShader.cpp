@@ -83,4 +83,60 @@ namespace PyroEngine
 
 		RendererID = program;
 	}
+
+	void OpenGLShader::UploadUniformInt(const std::string& name, int value)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniform1i(location, value);
+	}
+
+	void OpenGLShader::UploadUniformIntArray(const std::string& name, int* values, uint64_t count)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniform1iv(location, count, values);
+	}
+
+	void OpenGLShader::UploadUniformFloat(const std::string& name, float value)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniform1f(location, value);
+	}
+
+	void OpenGLShader::UploadUniformFloatArray(const std::string& name, float* values, uint64_t count)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniform1fv(location, count, values);
+	}
+
+	void OpenGLShader::UploadUniformVector2(const std::string& name, const Vector2& vector)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniform2f(location, vector.x, vector.y);
+	}
+
+	void OpenGLShader::UploadUniformVector3(const std::string& name, const Vector3& vector)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+
+	void OpenGLShader::UploadUniformVector4(const std::string& name, const Vector4& vector)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+	}
+
+	void OpenGLShader::UploadUniformMatrix4x4(const std::string& name, const Matrix4x4& matrix)
+	{
+		glUseProgram(RendererID);
+		GLint location = glGetUniformLocation(RendererID, name.c_str());
+		glUniformMatrix4fv(location, 1, GL_FALSE, &matrix.components[0]);
+	}
 }

@@ -21,5 +21,6 @@ namespace PyroEngine
 		virtual const std::filesystem::path& GetFilePath() const override { return m_FilePath; }
 
 		virtual void SetData(void* data, uint32_t size) override;
+		virtual void BindToSlot(uint32_t slot = 0) override;
 	};
 }

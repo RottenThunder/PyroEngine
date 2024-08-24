@@ -15,6 +15,7 @@ namespace PyroEngine
 		virtual const std::filesystem::path& GetFilePath() const = 0;
 
 		virtual void SetData(void* data, uint32_t size) = 0;
+		virtual void BindToSlot(uint32_t slot = 0) = 0;
 
 		static Texture* Create(const std::filesystem::path& filePath);
 		static Texture* Create(uint32_t width, uint32_t height);

@@ -1,6 +1,7 @@
 #include "PyroEnginePCH.h"
 #include "Window.h"
 #include "Core.h"
+#include "PyroEngine/Renderer/Renderer.h"
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
@@ -127,6 +128,8 @@ namespace PyroEngine
 			});
 
 		SetVSync(false);
+
+		Renderer::Init();
 	}
 
 	Window::~Window()

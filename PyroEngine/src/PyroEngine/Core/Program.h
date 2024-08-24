@@ -11,9 +11,6 @@ namespace PyroEngine
 	{
 	protected:
 		Window p_Window;
-		VertexArray* p_VertexArray = nullptr;
-		Shader* p_Shader = nullptr;
-		Texture* p_Texture = nullptr;
 	public:
 		Program(const std::string& name = "PyroEngine", int width = 1280, int height = 720) : p_Window(name, width, height) {}
 		virtual ~Program() {}
