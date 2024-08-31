@@ -46,8 +46,8 @@ namespace PyroEngine
 		s_QuadVertexBuffer = VertexBuffer::Create(s_MaxVertices * sizeof(QuadVertex));
 		s_QuadVertexBuffer->SetLayout({
 			{ ShaderDataType::Float2, "i_Position" },
-			{ ShaderDataType::Float2, "i_TexCoord" },
 			{ ShaderDataType::Float4, "i_Colour" },
+			{ ShaderDataType::Float2, "i_TexCoord" },
 			{ ShaderDataType::Float, "i_TexIndex" },
 			});
 		s_QuadVertexArray->AddVertexBuffer(s_QuadVertexBuffer);
@@ -84,10 +84,10 @@ namespace PyroEngine
 			samplers[i] = i;
 
 		std::string vertexSrc = R"(
-			#version 330 core
+			#version 400 core
 			layout(location = 0) in vec2 i_Position;
-			layout(location = 1) in vec2 i_TexCoord;
-			layout(location = 2) in vec4 i_Colour;
+			layout(location = 1) in vec4 i_Colour;
+			layout(location = 2) in vec2 i_TexCoord;
 			layout(location = 3) in float i_TexIndex;
 			uniform mat4 u_ViewProjection;
 			out vec2 v_TexCoord;
@@ -103,7 +103,7 @@ namespace PyroEngine
 		)";
 
 		std::string fragmentSrc = R"(
-			#version 330 core
+			#version 400 core
 			layout(location = 0) out vec4 colour;
 			in vec2 v_TexCoord;
 			in vec4 v_Colour;
@@ -124,14 +124,27 @@ namespace PyroEngine
 
 	void Renderer::Terminate()
 	{
+		delete s_TextureShader;
+		delete s_WhiteTexture;
 		delete[] s_QuadVertexBufferBase;
+		delete s_QuadVertexBuffer;
+		delete s_QuadVertexArray->GetIndexBuffer();
+		delete s_QuadVertexArray;
+		delete s_GraphicsCommand;
+		s_MaxTextureSlots = 0;
+		s_QuadIndexCount = 0;
+		s_TextureSlotIndex = 0;
+		s_RendererInitialised = false;
+	}
+
+	void Renderer::ClearScreen(const Colour& colour)
+	{
+		s_GraphicsCommand->SetClearColour(colour.red, colour.green, colour.blue);
+		s_GraphicsCommand->Clear();
 	}
 
 	void Renderer::BeginScene(const Camera& camera)
 	{
-		s_GraphicsCommand->SetClearColour(0.0f, 0.0f, 0.0f);
-		s_GraphicsCommand->Clear();
-
 		s_TextureShader->UploadUniformMatrix4x4("u_ViewProjection", camera.GetViewProjectionMatrix());
 
 		s_QuadIndexCount = 0;
@@ -161,33 +174,45 @@ namespace PyroEngine
 		s_TextureSlotIndex = 1;
 	}
 
-	void Renderer::DrawQuad(const Vector2& pos, float radians, const Vector2& size, float red, float green, float blue, Texture* texture)
+	void Renderer::DrawQuad(const Vector2& pos, float radians, const Vector2& size, const Colour& colour, Texture* texture)
 	{
 		if (s_QuadIndexCount >= s_MaxIndices)
 			EndSceneAndReset();
 
-		if (texture == nullptr)
-			return;
-
 		float textureIndex = 0.0f;
-		for (uint32_t i = 1; i < s_TextureSlotIndex; i++)
+		if (texture != nullptr)
 		{
-			if (s_TextureSlots[i] == texture)
+			for (uint32_t i = 1; i < s_TextureSlotIndex; i++)
 			{
-				textureIndex = (float)i;
-				break;
+				if (s_TextureSlots[i] == texture)
+				{
+					textureIndex = (float)i;
+					break;
+				}
+			}
+
+			if (textureIndex == 0.0f)
+			{
+				if (s_TextureSlotIndex >= s_MaxTextureSlots)
+					EndSceneAndReset();
+
+				textureIndex = (float)s_TextureSlotIndex;
+				s_TextureSlots[s_TextureSlotIndex] = texture;
+				s_TextureSlotIndex++;
 			}
 		}
 
-		if (textureIndex == 0.0f)
-		{
-			if (s_TextureSlotIndex >= s_MaxTextureSlots)
-				EndSceneAndReset();
+		//Tx = X Position
+		//Ty = Y Position
+		//Mx = X Size
+		//My = Y Size
+		//S = Sin(rotation)
+		//C = Cos(rotation)
 
-			textureIndex = (float)s_TextureSlotIndex;
-			s_TextureSlots[s_TextureSlotIndex] = texture;
-			s_TextureSlotIndex++;
-		}
+		//Bottom-Left Corner (BL) = 0.5(2Tx - CMx + SMy, 2Ty - CMy - SMx)
+		//Bottom-Right Corner (BR) = 0.5(2Tx + CMx + SMy, 2Ty - CMy + SMx)
+		//Top-Right Corner (TR) = 0.5(2Tx + CMx - SMy, 2Ty + CMy + SMx)
+		//Top-Left Corner (TL) = 0.5(2Tx - CMx - SMy, 2Ty + CMy - SMx)
 
 		float sinAngle = std::sin(radians);
 		float cosAngle = std::cos(radians);
@@ -228,38 +253,26 @@ namespace PyroEngine
 		pos4.y += pos.y;
 
 		s_QuadVertexBufferPtr->position = pos1;
+		s_QuadVertexBufferPtr->colour = colour;
 		s_QuadVertexBufferPtr->texCoord = { 0.0f, 0.0f };
-		s_QuadVertexBufferPtr->red = red;
-		s_QuadVertexBufferPtr->green = green;
-		s_QuadVertexBufferPtr->blue = blue;
-		s_QuadVertexBufferPtr->alpha = 1.0f;
 		s_QuadVertexBufferPtr->texIndex = textureIndex;
 		s_QuadVertexBufferPtr++;
 
 		s_QuadVertexBufferPtr->position = pos2;
+		s_QuadVertexBufferPtr->colour = colour;
 		s_QuadVertexBufferPtr->texCoord = { 1.0f, 0.0f };
-		s_QuadVertexBufferPtr->red = red;
-		s_QuadVertexBufferPtr->green = green;
-		s_QuadVertexBufferPtr->blue = blue;
-		s_QuadVertexBufferPtr->alpha = 1.0f;
 		s_QuadVertexBufferPtr->texIndex = textureIndex;
 		s_QuadVertexBufferPtr++;
 
 		s_QuadVertexBufferPtr->position = pos3;
+		s_QuadVertexBufferPtr->colour = colour;
 		s_QuadVertexBufferPtr->texCoord = { 1.0f, 1.0f };
-		s_QuadVertexBufferPtr->red = red;
-		s_QuadVertexBufferPtr->green = green;
-		s_QuadVertexBufferPtr->blue = blue;
-		s_QuadVertexBufferPtr->alpha = 1.0f;
 		s_QuadVertexBufferPtr->texIndex = textureIndex;
 		s_QuadVertexBufferPtr++;
 
 		s_QuadVertexBufferPtr->position = pos4;
+		s_QuadVertexBufferPtr->colour = colour;
 		s_QuadVertexBufferPtr->texCoord = { 0.0f, 1.0f };
-		s_QuadVertexBufferPtr->red = red;
-		s_QuadVertexBufferPtr->green = green;
-		s_QuadVertexBufferPtr->blue = blue;
-		s_QuadVertexBufferPtr->alpha = 1.0f;
 		s_QuadVertexBufferPtr->texIndex = textureIndex;
 		s_QuadVertexBufferPtr++;
 

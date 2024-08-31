@@ -7,7 +7,7 @@ namespace PyroEngine
 {
 	enum ShaderDataType
 	{
-		ShaderDataTypeNone = 0, Float, Float2, Float3, Float4, Double, Double2, Double3, Double4, Int, Int2, Int3, Int4, Bool, Mat2x2f, Mat3x3f, Mat4x4f, Mat2x2d, Mat3x3d, Mat4x4d
+		ShaderDataTypeNone = 0, Float, Float2, Float3, Float4, Double, Double2, Double3, Double4, Int, Int2, Int3, Int4, UInt, UInt2, UInt3, UInt4, Bool, Mat2x2f, Mat3x3f, Mat4x4f, Mat2x2d, Mat3x3d, Mat4x4d
 	};
 
 	static uint32_t ShaderDataTypeSize(ShaderDataType type)
@@ -40,6 +40,14 @@ namespace PyroEngine
 			return sizeof(int) * 3;
 		case ShaderDataType::Int4:
 			return sizeof(int) * 4;
+		case ShaderDataType::UInt:
+			return sizeof(unsigned int);
+		case ShaderDataType::UInt2:
+			return sizeof(unsigned int) * 2;
+		case ShaderDataType::UInt3:
+			return sizeof(unsigned int) * 3;
+		case ShaderDataType::UInt4:
+			return sizeof(unsigned int) * 4;
 		case ShaderDataType::Bool:
 			return sizeof(bool);
 		case ShaderDataType::Mat2x2f:
@@ -100,6 +108,14 @@ namespace PyroEngine
 			case ShaderDataType::Int3:
 				return 3;
 			case ShaderDataType::Int4:
+				return 4;
+			case ShaderDataType::UInt:
+				return 1;
+			case ShaderDataType::UInt2:
+				return 2;
+			case ShaderDataType::UInt3:
+				return 3;
+			case ShaderDataType::UInt4:
 				return 4;
 			case ShaderDataType::Bool:
 				return 1;

@@ -1,6 +1,7 @@
 #pragma once
 #include "PyroEngine/Renderer/OpenGL/OpenGLCommand.h"
 #include "PyroEngine/Maths/Vector.h"
+#include "PyroEngine/Maths/Colour.h"
 #include "Texture.h"
 #include "Shader.h"
 #include "Camera.h"
@@ -10,11 +11,8 @@ namespace PyroEngine
 	struct QuadVertex
 	{
 		Vector2 position;
+		Colour colour;
 		Vector2 texCoord;
-		float red;
-		float green;
-		float blue;
-		float alpha;
 		float texIndex;
 	};
 
@@ -44,10 +42,12 @@ namespace PyroEngine
 		static void Init();
 		static void Terminate();
 
+		static void ClearScreen(const Colour& colour);
+
 		static void BeginScene(const Camera& camera);
 		static void EndScene();
 		static void EndSceneAndReset();
 
-		static void DrawQuad(const Vector2& pos, float radians, const Vector2& size, float red, float green, float blue, Texture* texture = nullptr);
+		static void DrawQuad(const Vector2& pos, float radians, const Vector2& size, const Colour& colour, Texture* texture = nullptr);
 	};
 }

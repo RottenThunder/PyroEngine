@@ -4,35 +4,15 @@ class MainProgram : public PyroEngine::Program
 {
 private:
 	PyroEngine::Camera camera;
-	PyroEngine::Texture* tex1;
-	PyroEngine::Texture* tex2;
+	float time;
 public:
 	MainProgram()
 		: Program() {}
 
 	virtual void OnProgramAttach() override
 	{
-		camera.Set({ 0.0f, 0.0f }, 0.0f, 1.0f, 1.0f);
-		tex1 = PyroEngine::Texture::Create(5, 5);
-		tex2 = PyroEngine::Texture::Create(3, 3);
-		uint8_t tex1Colours[5 * 5 * 4];
-		for (size_t i = 0; i < 5 * 5; i++)
-		{
-			tex1Colours[(i * 4) + 0] = (uint8_t)i * 10;
-			tex1Colours[(i * 4) + 1] = (uint8_t)i * 5;
-			tex1Colours[(i * 4) + 2] = (uint8_t)i * 8;
-			tex1Colours[(i * 4) + 3] = 0xFF;
-		}
-		uint8_t tex2Colours[3 * 3 * 4];
-		for (size_t i = 0; i < 3 * 3; i++)
-		{
-			tex2Colours[(i * 4) + 0] = (uint8_t)i * 3;
-			tex2Colours[(i * 4) + 1] = (uint8_t)i * 10;
-			tex2Colours[(i * 4) + 2] = (uint8_t)i * 7;
-			tex2Colours[(i * 4) + 3] = 0xFF;
-		}
-		tex1->SetData(tex1Colours, 5 * 5 * 4);
-		tex2->SetData(tex2Colours, 3 * 3 * 4);
+		time = 0.0f;
+		camera.Set({ 12.0f, 12.0f }, 0.0f, 1.0f, 0.0625f);
 	}
 
 	virtual void OnProgramDetach() override
@@ -41,14 +21,49 @@ public:
 
 	virtual void OnProgramUpdate() override
 	{
+		time += 0.000244140625f;
+		PyroEngine::Renderer::ClearScreen({ std::abs(std::sin(time)) * 0.25f });
 		PyroEngine::Renderer::BeginScene(camera);
-		PyroEngine::Renderer::DrawQuad({ 0.5f, 0.5f }, 0.0f, { 0.25f, 0.25f }, 1.0f, 1.0f, 1.0f, tex1);
-		PyroEngine::Renderer::DrawQuad({ -0.5f, -0.5f }, 0.0f, { 0.25f, 0.25f }, 1.0f, 1.0f, 1.0f, tex2);
+		for (float y = 0.0f; y < 25.0f; y += 1.0f)
+		{
+			for (float x = 0.0f; x < 25.0f; x += 1.0f)
+			{
+				PyroEngine::Renderer::DrawQuad({ x, y }, 0.0f, { 0.75f, 0.75f }, { std::abs(std::sin(time + y)), std::abs(std::cos(time + x)), std::abs(std::sin(time + x + y)), std::abs(std::cos(time + x + y)) });
+			}
+		}
 		PyroEngine::Renderer::EndScene();
 	}
 
 	virtual void OnProgramEvent(PyroEngine::Event& e) override
 	{
+		if (e.GetEventType() == PyroEngine::KeyPressed)
+		{
+			PyroEngine::KeyPressedEvent keyPressedEvent = (PyroEngine::KeyPressedEvent&)e;
+			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_W)
+			{
+				PyroEngine::Vector2 vec2 = camera.GetPosition();
+				vec2.y += 0.125f;
+				camera.SetPosition(vec2);
+			}
+			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_S)
+			{
+				PyroEngine::Vector2 vec2 = camera.GetPosition();
+				vec2.y -= 0.125f;
+				camera.SetPosition(vec2);
+			}
+			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_A)
+			{
+				PyroEngine::Vector2 vec2 = camera.GetPosition();
+				vec2.x -= 0.125f;
+				camera.SetPosition(vec2);
+			}
+			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_D)
+			{
+				PyroEngine::Vector2 vec2 = camera.GetPosition();
+				vec2.x += 0.125f;
+				camera.SetPosition(vec2);
+			}
+		}
 	}
 };
 

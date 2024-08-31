@@ -34,6 +34,14 @@ namespace PyroEngine
 			return GL_INT;
 		case ShaderDataType::Int4:
 			return GL_INT;
+		case ShaderDataType::UInt:
+			return GL_UNSIGNED_INT;
+		case ShaderDataType::UInt2:
+			return GL_UNSIGNED_INT;
+		case ShaderDataType::UInt3:
+			return GL_UNSIGNED_INT;
+		case ShaderDataType::UInt4:
+			return GL_UNSIGNED_INT;
 		case ShaderDataType::Bool:
 			return GL_BOOL;
 		case ShaderDataType::Mat2x2f:
