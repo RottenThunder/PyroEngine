@@ -17,12 +17,12 @@ namespace PyroEngine
 
 		void OnEngineAttach();
 		void OnEngineDetach();
-		void OnEngineUpdate();
+		void OnEngineUpdate(float deltaTime);
 		void OnEngineEvent(Event& e);
 
 		virtual void OnProgramAttach();
 		virtual void OnProgramDetach();
-		virtual void OnProgramUpdate();
+		virtual void OnProgramUpdate(float deltaTime);
 		virtual void OnProgramEvent(Event& e);
 	};
 }

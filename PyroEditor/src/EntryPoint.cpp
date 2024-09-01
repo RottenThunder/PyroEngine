@@ -19,9 +19,9 @@ public:
 	{
 	}
 
-	virtual void OnProgramUpdate() override
+	virtual void OnProgramUpdate(float deltaTime) override
 	{
-		time += 0.000244140625f;
+		time += deltaTime;
 		PyroEngine::Renderer::ClearScreen({ std::abs(std::sin(time)) * 0.25f });
 		PyroEngine::Renderer::BeginScene(camera);
 		for (float y = 0.0f; y < 25.0f; y += 1.0f)

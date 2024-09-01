@@ -15,9 +15,9 @@ namespace PyroEngine
 		OnProgramDetach();
 	}
 
-	void Program::OnEngineUpdate()
+	void Program::OnEngineUpdate(float deltaTime)
 	{
-		OnProgramUpdate();
+		OnProgramUpdate(deltaTime);
 
 		p_Window.OnUpdate();
 	}
@@ -38,7 +38,7 @@ namespace PyroEngine
 	{
 	}
 
-	void Program::OnProgramUpdate()
+	void Program::OnProgramUpdate(float deltaTime)
 	{
 	}
 

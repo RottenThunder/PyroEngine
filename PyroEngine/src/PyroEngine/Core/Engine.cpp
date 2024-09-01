@@ -11,6 +11,7 @@ namespace PyroEngine
 {
 	bool Engine::m_Running = true;
 	std::vector<Program*> Engine::m_Programs;
+	Timer Engine::m_DeltaTimer;
 
 	void Engine::Init()
 	{
@@ -56,12 +57,15 @@ namespace PyroEngine
 
 	void Engine::Run()
 	{
+		m_DeltaTimer.Reset();
+
 		while (m_Running)
 		{
+			float deltaTime = m_DeltaTimer.GetSeconds();
+
+			m_DeltaTimer.Reset();
 			for (Program* program : m_Programs)
-			{
-				program->OnEngineUpdate();
-			}
+				program->OnEngineUpdate(deltaTime);
 		}
 	}
 
