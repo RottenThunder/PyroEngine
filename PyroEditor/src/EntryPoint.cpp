@@ -12,7 +12,7 @@ public:
 	virtual void OnProgramAttach() override
 	{
 		time = 0.0f;
-		camera.Set({ 12.0f, 12.0f }, 0.0f, 1.0f, 0.0625f);
+		camera.Set({ 14.5f, 14.5f }, 0.0f, 16.0f / 9.0f, 0.0625f);
 	}
 
 	virtual void OnProgramDetach() override
@@ -24,46 +24,44 @@ public:
 		time += deltaTime;
 		PyroEngine::Renderer::ClearScreen({ std::abs(std::sin(time)) * 0.25f });
 		PyroEngine::Renderer::BeginScene(camera);
-		for (float y = 0.0f; y < 25.0f; y += 1.0f)
-		{
-			for (float x = 0.0f; x < 25.0f; x += 1.0f)
-			{
-				PyroEngine::Renderer::DrawQuad({ x, y }, 0.0f, { 0.75f, 0.75f }, { std::abs(std::sin(time + y)), std::abs(std::cos(time + x)), std::abs(std::sin(time + x + y)), std::abs(std::cos(time + x + y)) });
-			}
-		}
+		for (float y = 0.0f; y < 30.0f; y += 1.0f)
+			for (float x = 0.0f; x < 30.0f; x += 1.0f)
+				PyroEngine::Renderer::DrawQuad({ x, y }, 0.0f, { 1.0f, 1.0f }, { std::abs(std::sin(time + y)), std::abs(std::cos(time + x)), std::abs(std::sin(time + x + y)), std::abs(std::cos(time + x + y)) });
 		PyroEngine::Renderer::EndScene();
+
+		PyroEngine::Vector2 vec2 = camera.GetPosition();
+		if (p_Window.IsKeyPressed(PYRO_KEY_W))
+			vec2.y += deltaTime;
+		if (p_Window.IsKeyPressed(PYRO_KEY_S))
+			vec2.y -= deltaTime;
+		if (p_Window.IsKeyPressed(PYRO_KEY_A))
+			vec2.x -= deltaTime;
+		if (p_Window.IsKeyPressed(PYRO_KEY_D))
+			vec2.x += deltaTime;
+
+		float radians = camera.GetRotation();
+		if (p_Window.IsKeyPressed(PYRO_KEY_Q))
+			radians -= deltaTime;
+		if (p_Window.IsKeyPressed(PYRO_KEY_E))
+			radians += deltaTime;
+
+		float aspectRatio = camera.GetAspectRatio();
+		if (p_Window.IsKeyPressed(PYRO_KEY_BRACKET_LEFT))
+			aspectRatio -= deltaTime;
+		if (p_Window.IsKeyPressed(PYRO_KEY_BRACKET_RIGHT))
+			aspectRatio += deltaTime;
+
+		float zoom = camera.GetZoom();
+		if (p_Window.IsKeyPressed(PYRO_KEY_COMMA))
+			zoom -= deltaTime;
+		if (p_Window.IsKeyPressed(PYRO_KEY_FULL_STOP))
+			zoom += deltaTime;
+
+		camera.Set(vec2, radians, aspectRatio, zoom);
 	}
 
 	virtual void OnProgramEvent(PyroEngine::Event& e) override
 	{
-		if (e.GetEventType() == PyroEngine::KeyPressed)
-		{
-			PyroEngine::KeyPressedEvent keyPressedEvent = (PyroEngine::KeyPressedEvent&)e;
-			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_W)
-			{
-				PyroEngine::Vector2 vec2 = camera.GetPosition();
-				vec2.y += 0.125f;
-				camera.SetPosition(vec2);
-			}
-			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_S)
-			{
-				PyroEngine::Vector2 vec2 = camera.GetPosition();
-				vec2.y -= 0.125f;
-				camera.SetPosition(vec2);
-			}
-			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_A)
-			{
-				PyroEngine::Vector2 vec2 = camera.GetPosition();
-				vec2.x -= 0.125f;
-				camera.SetPosition(vec2);
-			}
-			if (keyPressedEvent.GetKeyCode() == PYRO_KEY_D)
-			{
-				PyroEngine::Vector2 vec2 = camera.GetPosition();
-				vec2.x += 0.125f;
-				camera.SetPosition(vec2);
-			}
-		}
 	}
 };
 
